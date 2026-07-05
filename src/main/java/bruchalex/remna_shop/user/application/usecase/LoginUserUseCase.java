@@ -2,7 +2,7 @@ package bruchalex.remna_shop.user.application.usecase;
 
 import bruchalex.remna_shop.user.application.dto.LoginUserRequest;
 import bruchalex.remna_shop.user.application.dto.LoginUserResponse;
-import bruchalex.remna_shop.user.application.port.TokenGenerator;
+import bruchalex.remna_shop.shared.auth.TokenGenerator;
 import bruchalex.remna_shop.user.domain.*;
 import bruchalex.remna_shop.user.domain.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class LoginUserUseCase {
             throw new InvalidCredentialsException();
         }
 
-        var token = tokenGenerator.generate(user.getUuid(), user.getRole());
+        var token = tokenGenerator.generate(user.getUuid().toString(), user.getRole().getValue());
 
         return new LoginUserResponse(token);
     }

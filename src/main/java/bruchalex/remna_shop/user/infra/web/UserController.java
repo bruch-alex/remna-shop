@@ -1,10 +1,10 @@
-package bruchalex.remna_shop.user.interfaces.rest;
+package bruchalex.remna_shop.user.infra.web;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 public class UserController {
 
 }

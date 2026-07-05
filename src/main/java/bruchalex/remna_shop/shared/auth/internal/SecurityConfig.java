@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.shared.auth;
+package bruchalex.remna_shop.shared.auth.internal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -22,9 +23,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthFilter jwtFilter;
+    private final UserDetailsService userDetailsService;
 
     @Bean
-    SecurityFilterChain sfc(HttpSecurity http) {
+    SecurityFilterChain sfc(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> {
@@ -47,4 +49,5 @@ public class SecurityConfig {
 
         return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
+
 }
