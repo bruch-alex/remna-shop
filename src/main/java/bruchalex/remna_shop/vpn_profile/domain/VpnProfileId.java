@@ -12,4 +12,8 @@ public record VpnProfileId(UUID value) {
     public VpnProfileId() {
         this(UUID.randomUUID());
     }
+
+    public static VpnProfileId of(UUID value) {
+        return new VpnProfileId(value);
+    }
 }
