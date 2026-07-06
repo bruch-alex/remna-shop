@@ -28,15 +28,11 @@ public class UserDetailsAdapter implements UserDetailsService {
         MyUser domainUser = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
-        return convertToUserDetails(domainUser);
-    }
-
-    private UserDetails convertToUserDetails(MyUser user) {
-        return new User(
-                user.getEmail().value(),
-                user.getHashedPassword().value(),
-                mapAuthorities(user.getRole())
-        );
+        return User.builder()
+                .username(domainUser.getUuid().value().toString())
+                .password(domainUser.getHashedPassword().value())
+                .authorities(mapAuthorities(domainUser.getRole()))
+                .build();
     }
 
     private Collection<GrantedAuthority> mapAuthorities(UserRole role) {

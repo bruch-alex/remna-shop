@@ -33,19 +33,33 @@ The context exposes a UserService used by other modules to look up user informat
 Each module follows the same internal layout:
 
 ```
-bruchalex.remna_shop
-    user/
-        api/ <- 
-            UserController.java <- REST API controller
-            dto/ <- DTOs for user requests and responses
-        domain/ <- Aggregates (models)
-            User.java <- Entity
-            RefreshToken.java <- Entity
-            UserRepository.java <- interface for database access
-        infrastructure/ <- database access
-            UserRepositoryImpl.java <- JPA implementation
-        services/
-    catalog/
-    
-    order/
+com.bruchalex.remna_shop
+│
+├── VpnServiceApplication.java
+│
+├── shared/
+│   └── security/
+│   └── auth/ 
+│
+├── user/
+│   ├── package-info.java
+│   ├── UserInfoResponse.java
+│   ├── UserOperations.java
+│   ├── application/
+│   │   ├── LoginUserUseCase.java
+│   │   ├── RegisterUserUseCase.java
+│   │   └── UserOperationsService.java
+│   ├── rest/
+│   │   ├── UserController.java
+│   │   └── dto/
+│   │       ├── RegisterUserRequest.java
+│   │       └── RegisterUserResponse.java
+│   ├── domain/
+│   │   ├── User.java
+│   │   └── UserId.java
+│   └── infra/
+│       └── security/
+│           └── UserDetailsAdapter.java
+│
+├── vpn_profile/
 ```
