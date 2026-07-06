@@ -24,7 +24,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest request) {
-        System.out.println(request.email());
+        var user = registerUserUseCase.execute(request);
+
         return ResponseEntity.ok(registerUserUseCase.execute(request));
     }
 

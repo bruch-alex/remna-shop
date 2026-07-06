@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.vpn_profile.core.domain;
+package bruchalex.remna_shop.vpn_profile.internal.domain;
 
 import java.util.Objects;
 import java.util.UUID;

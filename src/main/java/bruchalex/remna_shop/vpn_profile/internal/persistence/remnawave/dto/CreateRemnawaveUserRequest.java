@@ -1,12 +1,13 @@
-package bruchalex.remna_shop.vpn_profile.out.remnawave.dto;
+package bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave.dto;
 
 import lombok.Builder;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Builder
 public class CreateRemnawaveUserRequest {
     @Builder.Default
-    private String username = "user_" + Instant.now().toString();
+    private UUID username = UUID.randomUUID();
     private Instant expireAt;
 }
