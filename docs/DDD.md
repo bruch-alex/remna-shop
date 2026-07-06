@@ -33,64 +33,33 @@ The context exposes a UserService used by other modules to look up user informat
 Each module follows the same internal layout:
 
 ```
-com.bruchalex.remnashop
+com.bruchalex.remna_shop
 │
-├── VpnServiceApplication.java          ← @SpringBootApplication (sees everything)
+├── VpnServiceApplication.java
 │
-├── shared/                             ← tiny: only genuinely cross-context stuff
-│   └── security/			← spring security
-│   └── auth/         			← jwt 
+├── shared/
+│   └── security/
+│   └── auth/ 
 │
-├── user/                               ← USERS bounded context
-│   ├── RegisterUserUseCase.java        ← public (inbound port)
-│   ├── RegisterUserCommand.java        ← public
-│   └── internal/                       ← everything here is package-private
-│       ├── web/
-│       │   ├── UserController.java
-│       │   ├── RegisterUserRequest.java
-│       │   └── UserResponse.java
-│       ├── application/
-│       │   └── RegisterUserService.java     (implements RegisterUserUseCase, publishes UserCreated)
-│       ├── domain/
-│       │   ├── User.java
-│       │   └── UserId.java
-│       └── persistence/
-│           ├── UserRepository.java          (outbound port)
-│           ├── UserJpaEntity.java
-│           ├── UserJpaRepository.java        (Spring Data)
-│           └── UserPersistenceAdapter.java   (implements UserRepository)
+├── user/
+│   ├── package-info.java
+│   ├── UserInfoResponse.java
+│   ├── UserOperations.java
+│   ├── application/
+│   │   ├── LoginUserUseCase.java
+│   │   ├── RegisterUserUseCase.java
+│   │   └── UserOperationsService.java
+│   ├── rest/
+│   │   ├── UserController.java
+│   │   └── dto/
+│   │       ├── RegisterUserRequest.java
+│   │       └── RegisterUserResponse.java
+│   ├── domain/
+│   │   ├── User.java
+│   │   └── UserId.java
+│   └── infra/
+│       └── security/
+│           └── UserDetailsAdapter.java
 │
-└── vpn/                                ← VPN/SUBSCRIPTION bounded context
-    ├── ProvisionVpnProfileUseCase.java      ← public (inbound port)
-    ├── ProvisionVpnProfileCommand.java      ← public
-    ├── ActivateSubscriptionUseCase.java     ← public (inbound port)
-    ├── ActivateSubscriptionCommand.java     ← public
-    ├── SubscriptionResponse.java            ← public (returned to callers)
-    └── internal/                            ← everything here is package-private
-        ├── web/
-        │   ├── SubscriptionController.java   (GET /subscription, POST /trial)
-        │   └── TrialRequest.java
-        ├── application/
-        │   ├── ProvisionVpnProfileService.java   (create disabled profile)
-        │   ├── ActivateSubscriptionService.java  (enable + set expiry)
-        │   └── ExpireSubscriptionsJob.java        (scheduled: disable expired)
-        ├── domain/
-        │   ├── VpnProfile.java               (aggregate: userId ↔ remnawaveUuid, status)
-        │   ├── Subscription.java             (or fold into VpnProfile)
-        │   ├── SubscriptionStatus.java       (INACTIVE/ACTIVE/EXPIRED enum)
-        │   ├── Tariff.java
-        │   └── RemnawaveProfileId.java
-        ├── port/
-        │   ├── VpnProfileRepository.java      (outbound port — your DB)
-        │   ├── VpnProfileProvider.java        (outbound port — Remnawave)
-        │   └── TariffRepository.java          (outbound port)
-        └── persistence/
-            ├── VpnProfileJpaEntity.java
-            ├── VpnProfileJpaRepository.java
-            ├── VpnProfilePersistenceAdapter.java   (implements VpnProfileRepository)
-            └── remnawave/
-                ├── RemnawaveProfileAdapter.java     (implements VpnProfileProvider)
-                ├── RemnawaveClient.java             (HTTP calls)
-                ├── RemnawaveCreateRequest.java      (their DTOs — trapped in here)
-                └── RemnawaveProfileResponse.java
+├── vpn_profile/
 ```
