@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.user.infra.web;
+package bruchalex.remna_shop.user.rest;
 
 import bruchalex.remna_shop.shared.exception.ErrorResponse;
 import bruchalex.remna_shop.user.domain.exception.InvalidCredentialsException;

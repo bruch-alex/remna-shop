@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.user.infra.web;
+package bruchalex.remna_shop.user.rest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

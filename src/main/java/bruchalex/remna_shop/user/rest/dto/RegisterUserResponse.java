@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.user.application.dto;
+package bruchalex.remna_shop.user.rest.dto;
 
 import bruchalex.remna_shop.user.domain.MyUser;
 

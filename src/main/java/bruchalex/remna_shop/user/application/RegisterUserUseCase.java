@@ -1,7 +1,7 @@
-package bruchalex.remna_shop.user.application.usecase;
+package bruchalex.remna_shop.user.application;
 
-import bruchalex.remna_shop.user.web.dto.RegisterUserRequest;
-import bruchalex.remna_shop.user.web.dto.RegisterUserResponse;
+import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
 import bruchalex.remna_shop.user.domain.*;
 import bruchalex.remna_shop.user.domain.exception.UserAlreadyExistsException;
 import bruchalex.remna_shop.vpn_profile.ProvisionVpnProfileUseCase;

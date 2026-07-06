@@ -1,7 +1,7 @@
-package bruchalex.remna_shop.user.application.usecase;
+package bruchalex.remna_shop.user.application;
 
-import bruchalex.remna_shop.user.web.dto.LoginUserRequest;
-import bruchalex.remna_shop.user.web.dto.LoginUserResponse;
+import bruchalex.remna_shop.user.rest.dto.LoginUserRequest;
+import bruchalex.remna_shop.user.rest.dto.LoginUserResponse;
 import bruchalex.remna_shop.shared.auth.TokenGenerator;
 import bruchalex.remna_shop.user.domain.*;
 import bruchalex.remna_shop.user.domain.exception.InvalidCredentialsException;

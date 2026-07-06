@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.user.application.dto;
+package bruchalex.remna_shop.user.rest.dto;
 
 public record LoginUserResponse(
         String accessToken

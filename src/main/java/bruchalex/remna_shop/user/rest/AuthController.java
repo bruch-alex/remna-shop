@@ -1,11 +1,11 @@
-package bruchalex.remna_shop.user.infra.web;
+package bruchalex.remna_shop.user.rest;
 
-import bruchalex.remna_shop.user.application.dto.LoginUserRequest;
-import bruchalex.remna_shop.user.application.dto.LoginUserResponse;
-import bruchalex.remna_shop.user.application.dto.RegisterUserRequest;
-import bruchalex.remna_shop.user.application.dto.RegisterUserResponse;
-import bruchalex.remna_shop.user.application.usecase.LoginUserUseCase;
-import bruchalex.remna_shop.user.application.usecase.RegisterUserUseCase;
+import bruchalex.remna_shop.user.rest.dto.LoginUserRequest;
+import bruchalex.remna_shop.user.rest.dto.LoginUserResponse;
+import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
+import bruchalex.remna_shop.user.application.LoginUserUseCase;
+import bruchalex.remna_shop.user.application.RegisterUserUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
