@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.vpn_profile.internal.domain;
+package bruchalex.remna_shop.vpn_profile.domain;
 
 import bruchalex.remna_shop.user.domain.UserId;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave.dto;
+package bruchalex.remna_shop.vpn_profile.infra.remnawave.dto;
 
 import java.time.Instant;
 import java.util.List;

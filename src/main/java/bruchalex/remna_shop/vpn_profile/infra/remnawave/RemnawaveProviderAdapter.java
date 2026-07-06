@@ -1,9 +1,9 @@
-package bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave;
+package bruchalex.remna_shop.vpn_profile.infra.remnawave;
 
-import bruchalex.remna_shop.vpn_profile.internal.domain.VpnProfile;
-import bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave.dto.RemnawaveUserResponse;
-import bruchalex.remna_shop.vpn_profile.internal.port.VpnProviderPort;
-import bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave.dto.CreateRemnawaveUserRequest;
+import bruchalex.remna_shop.vpn_profile.domain.VpnProfile;
+import bruchalex.remna_shop.vpn_profile.infra.remnawave.dto.RemnawaveUserResponse;
+import bruchalex.remna_shop.vpn_profile.domain.VpnProviderPort;
+import bruchalex.remna_shop.vpn_profile.infra.remnawave.dto.CreateRemnawaveUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

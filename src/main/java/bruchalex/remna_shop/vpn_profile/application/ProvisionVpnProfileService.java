@@ -1,15 +1,13 @@
-package bruchalex.remna_shop.vpn_profile.internal.service;
+package bruchalex.remna_shop.vpn_profile.application;
 
-import bruchalex.remna_shop.user.domain.UserRepository;
 import bruchalex.remna_shop.vpn_profile.ProvisionVpnProfileCommand;
 import bruchalex.remna_shop.vpn_profile.ProvisionVpnProfileUseCase;
-import bruchalex.remna_shop.vpn_profile.internal.domain.VpnProfile;
-import bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave.dto.CreateRemnawaveUserRequest;
-import bruchalex.remna_shop.vpn_profile.internal.port.VpnProfileRepository;
-import bruchalex.remna_shop.vpn_profile.internal.port.VpnProviderPort;
+import bruchalex.remna_shop.vpn_profile.domain.VpnProfile;
+import bruchalex.remna_shop.vpn_profile.infra.remnawave.dto.CreateRemnawaveUserRequest;
+import bruchalex.remna_shop.vpn_profile.domain.VpnProfileRepository;
+import bruchalex.remna_shop.vpn_profile.domain.VpnProviderPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.Instant;
 

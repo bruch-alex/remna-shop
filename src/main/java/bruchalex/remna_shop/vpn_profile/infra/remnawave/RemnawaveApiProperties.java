@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.vpn_profile.internal.persistence.remnawave;
+package bruchalex.remna_shop.vpn_profile.infra.remnawave;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

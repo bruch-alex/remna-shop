@@ -1,6 +1,5 @@
-package bruchalex.remna_shop.vpn_profile.internal.port;
+package bruchalex.remna_shop.vpn_profile.domain;
 
-import bruchalex.remna_shop.vpn_profile.internal.domain.VpnProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

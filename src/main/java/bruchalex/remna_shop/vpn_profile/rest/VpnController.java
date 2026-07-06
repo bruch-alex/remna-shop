@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.vpn_profile.internal.web;
+package bruchalex.remna_shop.vpn_profile.rest;
 
 import bruchalex.remna_shop.vpn_profile.ProvisionVpnProfileCommand;
 import bruchalex.remna_shop.vpn_profile.ProvisionVpnProfileUseCase;
