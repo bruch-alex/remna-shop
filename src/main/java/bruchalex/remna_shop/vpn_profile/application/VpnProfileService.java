@@ -13,7 +13,7 @@ import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-public class ProvisionVpnProfileService implements ProvisionVpnProfileUseCase {
+public class VpnProfileService implements ProvisionVpnProfileUseCase {
     private final VpnProfileRepository vpnProfileRepository;
     private final VpnProviderPort vpnProvider;
 
