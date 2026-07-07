@@ -1,5 +1,6 @@
 package bruchalex.remna_shop.vpn_profile.infra.remnawave;
 
+import bruchalex.remna_shop.vpn_profile.CreateNewVpnProfileCommand;
 import bruchalex.remna_shop.vpn_profile.domain.VpnProfile;
 import bruchalex.remna_shop.vpn_profile.infra.remnawave.dto.RemnawaveUserResponse;
 import bruchalex.remna_shop.vpn_profile.domain.VpnProviderPort;
@@ -17,7 +18,7 @@ public class RemnawaveProviderAdapter implements VpnProviderPort {
     private final RemnawaveHttpApi remnawaveHttpApi;
 
     @Override
-    public VpnProfile createEmptyVpnProfile() {
+    public VpnProfile createVpnProfile(CreateNewVpnProfileCommand command) {
         var createRemnawaveUserRequest = CreateRemnawaveUserRequest.builder()
                 .username(UUID.randomUUID())
                 .expireAt(Instant.now())

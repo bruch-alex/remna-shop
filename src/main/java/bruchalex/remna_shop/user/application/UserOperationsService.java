@@ -7,6 +7,7 @@ import bruchalex.remna_shop.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -15,9 +16,8 @@ public class UserOperationsService implements UserOperations {
     private final UserRepository userRepository;
 
     @Override
-    public UserInfo getUserInfo(UUID userUuid) {
-        var user = userRepository.findById(UserId.of(userUuid)).orElseThrow();
-
-        return new UserInfo(user.getUuid().value(), user.getEmail().value());
+    public Optional<UserInfo> getUserInfo(UUID userUuid) {
+        return userRepository.findById(UserId.of(userUuid))
+                .map(user -> new UserInfo(user.getUuid().value(), user.getEmail().value()));
     }
 }

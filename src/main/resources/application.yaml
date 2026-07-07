@@ -2,13 +2,20 @@ spring:
   application:
     name: remna-shop
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    hikari:
+      auto-commit=false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: false
+    show-sql:
+      properties:
+        hibernate:
+          format_sql: true
+
 app:
   vpn:
     test-period:
@@ -26,3 +33,5 @@ integration:
 logging:
   level:
     org.springframework.security: TRACE
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE

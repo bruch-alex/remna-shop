@@ -4,7 +4,9 @@ import java.time.Duration;
 import java.util.UUID;
 
 public record SubscriptionTerms(
-        UUID planId,
+        Integer tariffId,
         Integer price,
-        Duration period
+        Duration period,
+        Integer traffic,
+        Integer devicesLimit
 ) {}

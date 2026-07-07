@@ -3,6 +3,7 @@ package bruchalex.remna_shop.shared.auth.internal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,7 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
+    private final AuthenticationProvider authProvider;
 
     @Bean
     SecurityFilterChain sfc(HttpSecurity http) throws Exception {

@@ -10,4 +10,6 @@ public class CreateRemnawaveUserRequest {
     @Builder.Default
     private UUID username = UUID.randomUUID();
     private Instant expireAt;
+    private Integer trafficLimitGb;
+    private Integer deviceLimit;
 }
