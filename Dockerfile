@@ -1,6 +1,6 @@
 # ---- Build stage ----
 # FROM bellsoft/liberica-runtime-container:jdk-25-musl AS build
-FROM bellsoft/liberica-runtime-container:sha256:4ad1a75eb2b91358794196e418e9ea3cd3972de4a52108c5851b7d5c92a7fc70 AS build
+FROM bellsoft/liberica-runtime-container@sha256:befb4b0040b0c5e1c0f1b6fc7c6b7bd9f4e7b7e2ea41ff1e93348ac8335dfdb3 AS build
 
 WORKDIR /app
 COPY .mvn/ .mvn/
@@ -12,7 +12,8 @@ RUN ./mvnw clean package -DskipTests -B
 
 # ---- Runtime stage ----
 # FROM bellsoft/liberica-runtime-container:jre-25-slim-musl
-FROM bellsoft/liberica-runtime-container:sha256:0fa7f4b12f2e465556f6021a30cf2e5d922f818e2ad5d13cf9797f86d55dddaa
+FROM bellsoft/liberica-runtime-container@sha256:7206823d32fed057dbef030575862f6da2248b319fb60f687a931cbbd736b52b
+
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
