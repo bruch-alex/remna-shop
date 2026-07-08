@@ -17,12 +17,12 @@ public class RegisterUserUseCase {
 
     public RegisterUserResponse execute(RegisterUserRequest request) {
         var email = new Email(request.email());
-        var hashedPassword = new HashedPassword(passwordEncoder.encode(request.password()));
 
         if (userRepository.existsByEmail(email)) {
             throw new UserAlreadyExistsException(email);
         }
 
+        var hashedPassword = new HashedPassword(passwordEncoder.encode(request.password()));
         var newUser = MyUser.create(
                 email,
                 hashedPassword,
