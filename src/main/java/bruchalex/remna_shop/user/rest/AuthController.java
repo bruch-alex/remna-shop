@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -31,8 +33,3 @@ public class AuthController {
         return ResponseEntity.ok(loginUserUseCase.execute(request));
     }
 }
-
-// FIXME: Exception handler should throw correct http exceptions
-// TODO: Add option to create default admin from .env file ?
-// TODO: Write unit test for auth module (meh)
-// TODO: Think how later restrict some endpoints for authenticated users
