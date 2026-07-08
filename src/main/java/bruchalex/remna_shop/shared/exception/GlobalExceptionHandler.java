@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestControllerAdvice
 @Order(Ordered.LOWEST_PRECEDENCE)
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAuthorizationDenied(AuthorizationDeniedException ex) {
@@ -56,10 +56,9 @@ public class GlobalExceptionHandler {
             headers.setAllow(new HashSet<>(ex.getSupportedHttpMethods()));
         }
 
-        var body = new ErrorResponse("Method not allowed");
         return ResponseEntity
                 .status(HttpStatus.METHOD_NOT_ALLOWED)
                 .headers(headers)
-                .body(body);
+                .body(null);
     }
 }
