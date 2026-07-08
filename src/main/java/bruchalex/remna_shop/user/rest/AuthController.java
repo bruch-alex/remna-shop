@@ -9,10 +9,7 @@ import bruchalex.remna_shop.user.application.RegisterUserUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,3 +30,8 @@ public class AuthController {
         return ResponseEntity.ok(loginUserUseCase.execute(request));
     }
 }
+
+// FIXME: Exception handler should throw correct http exceptions
+// TODO: Add option to create default admin from .env file ?
+// TODO: Write unit test for auth module (meh)
+// TODO: Think how later restrict some endpoints for authenticated users

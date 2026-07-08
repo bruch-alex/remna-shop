@@ -26,7 +26,7 @@ public class LoginUserUseCase {
             throw new InvalidCredentialsException();
         }
 
-        var token = tokenGenerator.generate(user.getUuid().toString(), user.getRole().getValue());
+        var token = tokenGenerator.generate(user.getUuid().value(), user.getEmail().value(), user.getRole().getValue());
 
         return new LoginUserResponse(token);
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -15,9 +16,10 @@ public class JwtTokenGenerator implements TokenGenerator {
     private final JwtProperties properties;
 
     @Override
-    public String generate(String userId, String userRole) {
+    public String generate(UUID userUuid, String userEmail, String userRole) {
         return Jwts.builder()
-                .subject(userId)
+                .subject(userUuid.toString())
+                .claim("email", userEmail)
                 .claim("role", userRole)
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plus(properties.expiration())))
