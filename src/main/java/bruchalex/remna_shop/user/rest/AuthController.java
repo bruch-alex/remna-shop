@@ -6,6 +6,7 @@ import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
 import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
 import bruchalex.remna_shop.user.application.LoginUserUseCase;
 import bruchalex.remna_shop.user.application.RegisterUserUseCase;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ public class AuthController {
     private final LoginUserUseCase loginUserUseCase;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest request) {
+    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterUserRequest request) {
         var userResponse = registerUserUseCase.execute(request);
         return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginUserResponse> login(@RequestBody LoginUserRequest request) {
+    public ResponseEntity<LoginUserResponse> login(@Valid @RequestBody LoginUserRequest request) {
         return ResponseEntity.ok(loginUserUseCase.execute(request));
     }
 }
