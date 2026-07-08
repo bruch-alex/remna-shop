@@ -1,9 +1,11 @@
 package bruchalex.remna_shop.user.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record RegisterUserRequest(
-        String email,
-        String password,
-        String repeatPassword
+        @JsonProperty("email") String email,
+        @JsonProperty("password") String password,
+        @JsonProperty("repeat-password") String repeatPassword
 ) {
     public RegisterUserRequest {
         if (password.length() < 8) {
