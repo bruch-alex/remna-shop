@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.mockito.Mockito.*;
 
 
-public class LoginUserUseCaseTest {
+public class RegisterUserUseCaseTest {
 
     private final UserRepository userRepository = mock(UserRepository.class);
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
