@@ -4,9 +4,7 @@ import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
 import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
 import bruchalex.remna_shop.user.domain.*;
 import bruchalex.remna_shop.user.domain.exception.UserAlreadyExistsException;
-import bruchalex.remna_shop.vpn_profile.ProvisionVpnProfileUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +14,6 @@ public class RegisterUserUseCase {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ApplicationEventPublisher publisher;
-    private final ProvisionVpnProfileUseCase provisionVpnProfileUseCase;
-
 
     public RegisterUserResponse execute(RegisterUserRequest request) {
         var email = new Email(request.email());
@@ -35,7 +30,6 @@ public class RegisterUserUseCase {
         );
 
         var saved = userRepository.save(newUser);
-        provisionVpnProfileUseCase.createVpnProfile(null);
         return RegisterUserResponse.from(saved);
     }
 }

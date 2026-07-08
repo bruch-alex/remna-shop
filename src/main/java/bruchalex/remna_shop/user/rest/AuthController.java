@@ -24,9 +24,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserRequest request) {
-        var user = registerUserUseCase.execute(request);
-
-        return ResponseEntity.ok(registerUserUseCase.execute(request));
+        var userResponse = registerUserUseCase.execute(request);
+        return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/login")
