@@ -1,6 +1,8 @@
 package bruchalex.remna_shop.shared.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE)
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthorizationDeniedException.class)
@@ -20,7 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(Exception ex) {
-        log.error("Unexpected error", ex);
+        log.error("Unexpected error handling request", ex);
         return ResponseEntity.internalServerError()
                 .body(new ErrorResponse("An unexpected error occurred"));
     }
