@@ -1,10 +1,11 @@
 package bruchalex.remna_shop.user.application;
 
+import bruchalex.remna_shop.shared.auth.TokenGenerator;
+import bruchalex.remna_shop.user.domain.Email;
+import bruchalex.remna_shop.user.domain.UserRepository;
+import bruchalex.remna_shop.user.domain.exception.InvalidCredentialsException;
 import bruchalex.remna_shop.user.rest.dto.LoginUserRequest;
 import bruchalex.remna_shop.user.rest.dto.LoginUserResponse;
-import bruchalex.remna_shop.shared.auth.TokenGenerator;
-import bruchalex.remna_shop.user.domain.*;
-import bruchalex.remna_shop.user.domain.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,24 @@ public class LoginUserUseCase {
     private final PasswordEncoder passwordEncoder;
     private final TokenGenerator tokenGenerator;
 
+    // https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-responses
     public LoginUserResponse execute(LoginUserRequest request) {
         var email = new Email(request.email());
+        var candidate = userRepository.findByEmail(email);
 
-        var user = userRepository.findByEmail(email)
-                .orElseThrow(InvalidCredentialsException::new);
+        var hashToVerify = candidate
+                .map(u -> u.getHashedPassword().value())
+                .orElse(null);
 
-        if (!passwordEncoder.matches(request.password(), user.getHashedPassword().value())) {
+        boolean passwordMatches = passwordEncoder.matches(request.password(), hashToVerify);
+
+        if (candidate.isEmpty() || !passwordMatches) {
             throw new InvalidCredentialsException();
         }
 
-        var token = tokenGenerator.generate(user.getUuid().toString(), user.getRole().getValue());
+        var user = candidate.get();
+        var token = tokenGenerator.generate(
+                user.getUuid().value(), user.getEmail().value(), user.getRole().getValue());
 
         return new LoginUserResponse(token);
     }

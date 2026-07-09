@@ -1,5 +1,6 @@
 package bruchalex.remna_shop.shared.auth.internal;
 
+import bruchalex.remna_shop.shared.auth.AuthUser;
 import bruchalex.remna_shop.shared.auth.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -33,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = extractToken(request);
 
-        if (token != null) {
+        if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 Claims claims = Jwts.parser()
                         .verifyWith(properties.secretKey())
@@ -41,8 +42,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         .parseSignedClaims(token)
                         .getPayload();
 
+                var authUser = new AuthUser(claims.getSubject(), claims.get("email").toString());
                 var authentication = new UsernamePasswordAuthenticationToken(
-                        claims.getSubject(),
+                        authUser,
                         null,
                         List.of(new SimpleGrantedAuthority("ROLE_" + claims.get("role")))
                 );
