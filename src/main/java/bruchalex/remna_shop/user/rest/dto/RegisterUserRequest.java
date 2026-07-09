@@ -13,7 +13,7 @@ public record RegisterUserRequest(
 
         @JsonProperty("password")
         @NotBlank
-        @Size(min = 8, message = "Password must be at least 8 chars")
+        @Size(min = 15, max = 128, message = "Password must be between 15 and 128 chars")
         String password,
 
         @JsonProperty("repeat-password")
