@@ -6,6 +6,7 @@ import bruchalex.remna_shop.tariff.application.UpdatePriceUseCase;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffRequest;
 import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class TariffController {
     private final UpdatePriceUseCase updatePriceUseCase;
 
     @PostMapping
-    public ResponseEntity<TariffResponse> createTariff(CreateNewTariffRequest request) {
+    public ResponseEntity<TariffResponse> createTariff(@Valid CreateNewTariffRequest request) {
 
         var command = tariffMapper.toCommand(request);
 
@@ -46,7 +47,7 @@ public class TariffController {
     }
 
     @PutMapping("/{id}/price")
-    public ResponseEntity<TariffResponse> updatePrice(@RequestBody Short price, @PathVariable UUID id) {
+    public ResponseEntity<TariffResponse> updatePrice(@RequestBody Integer price, @PathVariable UUID id) {
         var result = updatePriceUseCase.execute(id, price);
         return ResponseEntity.ok(tariffMapper.toResponse(result));
     }

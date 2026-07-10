@@ -1,6 +1,5 @@
 package bruchalex.remna_shop.tariff.application;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -10,10 +9,10 @@ public record TariffResult(
         boolean trial,
         boolean enabled,
 
-        Short trafficLimitGb,
-        Byte devicesLimit,
-        Duration durationDays,
-        Short priceRubles,
+        Integer trafficLimitGb,
+        Integer devicesLimit,
+        Integer durationDays,
+        Integer priceRubles,
 
         Instant createdAt,
         Instant updatedAt

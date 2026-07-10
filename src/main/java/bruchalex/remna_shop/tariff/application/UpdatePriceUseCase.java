@@ -15,7 +15,7 @@ public class UpdatePriceUseCase {
     private final TariffMapper tariffMapper;
 
     @Transactional
-    public TariffResult execute(UUID tariffId, Short newPrice) {
+    public TariffResult execute(UUID tariffId, Integer newPrice) {
         var tariff = tariffRepo.findTariffById(tariffId).orElseThrow();
 
         tariff.setNewPrice(newPrice);

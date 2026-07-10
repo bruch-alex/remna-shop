@@ -2,12 +2,12 @@ package bruchalex.remna_shop.tariff.domain;
 
 import bruchalex.remna_shop.tariff.application.CreateNewTariffCommand;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -24,15 +24,16 @@ public class Tariff {
     private boolean trial;
     private boolean enabled;
 
-    private Short trafficLimitGb;
-    private Byte devicesLimit;
-    private Duration durationDays;
-    private Short priceRubles;
+    private Integer trafficLimitGb;
+    private Integer devicesLimit;
+    private Integer durationDays;
+    private Integer priceRubles;
 
     private Instant createdAt;
     private Instant updatedAt;
 
-    public static Tariff create(String name, Short trafficLimitGb, Byte devicesLimit, Short priceRubles) {
+    public static Tariff create(String name, Integer trafficLimitGb, Integer devicesLimit, Integer priceRubles, Integer durationDays) {
+        var now =  Instant.now();
         return new Tariff(
                 UUID.randomUUID(),
                 name,
@@ -40,19 +41,21 @@ public class Tariff {
                 false,
                 trafficLimitGb,
                 devicesLimit,
-                Duration.ofDays(30),
+                durationDays,
                 priceRubles,
-                Instant.now(),
-                Instant.now()
+                now,
+                now
         );
     }
 
     public static Tariff fromCommand(CreateNewTariffCommand command) {
+
         return Tariff.create(
                 command.name(),
                 command.trafficLimitGb(),
                 command.devicesLimit(),
-                command.priceRubles()
+                command.priceRubles(),
+                command.durationDays()
         );
     }
 
@@ -64,7 +67,7 @@ public class Tariff {
         this.enabled = false;
     }
 
-    public void setNewPrice(@NonNull Short newPriceRubles) {
+    public void setNewPrice(Integer newPriceRubles) {
         if (newPriceRubles <= 0){
             throw new IllegalArgumentException();
         }
