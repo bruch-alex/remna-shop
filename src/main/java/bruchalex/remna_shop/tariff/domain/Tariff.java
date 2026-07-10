@@ -5,10 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -65,5 +62,12 @@ public class Tariff {
 
     public void disable() {
         this.enabled = false;
+    }
+
+    public void setNewPrice(@NonNull Short newPriceRubles) {
+        if (newPriceRubles <= 0){
+            throw new IllegalArgumentException();
+        }
+        this.priceRubles = newPriceRubles;
     }
 }
