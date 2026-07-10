@@ -1,21 +1,22 @@
 package bruchalex.remna_shop.tariff.application;
 
-import bruchalex.remna_shop.tariff.domain.Tariff;
 import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class CreateNewTariffUseCase {
-
+public class GetAllTariffsUseCase {
     private final TariffRepositoryPort tariffRepo;
     private final TariffMapper tariffMapper;
 
-    public TariffResult execute(CreateNewTariffCommand command) {
-        var tariff = Tariff.fromCommand(command);
-        var saved = tariffRepo.save(tariff);
-        return tariffMapper.toResult(saved);
+    public List<TariffResult> execute(boolean active) {
+        return tariffRepo.findAllByEnabled(active)
+                .stream()
+                .map(tariffMapper::toResult)
+                .toList();
     }
 }

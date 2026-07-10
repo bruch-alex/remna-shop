@@ -1,10 +1,10 @@
 package bruchalex.remna_shop.tariff.infra;
 
 import bruchalex.remna_shop.tariff.application.CreateNewTariffCommand;
-import bruchalex.remna_shop.tariff.application.CreateNewTariffResult;
+import bruchalex.remna_shop.tariff.application.TariffResult;
 import bruchalex.remna_shop.tariff.domain.Tariff;
 import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffRequest;
-import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffResponse;
+import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -14,7 +14,7 @@ public interface TariffMapper {
 
     CreateNewTariffCommand toCommand(CreateNewTariffRequest request);
 
-    CreateNewTariffResult toResult(Tariff tariff);
+    TariffResult toResult(Tariff tariff);
 
-    CreateNewTariffResponse toResponse(CreateNewTariffResult result);
+    TariffResponse toResponse(TariffResult result);
 }

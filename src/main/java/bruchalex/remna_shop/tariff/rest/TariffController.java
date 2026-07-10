@@ -1,15 +1,13 @@
 package bruchalex.remna_shop.tariff.rest;
 
 import bruchalex.remna_shop.tariff.application.CreateNewTariffUseCase;
+import bruchalex.remna_shop.tariff.application.GetAllTariffsUseCase;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffRequest;
-import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffResponse;
+import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,11 +15,15 @@ import java.util.List;
 @RequestMapping("/tariff")
 @RequiredArgsConstructor
 public class TariffController {
-    private final CreateNewTariffUseCase createNewTariffUseCase;
+
     private final TariffMapper tariffMapper;
 
+    private final CreateNewTariffUseCase createNewTariffUseCase;
+    private final GetAllTariffsUseCase getAllTariffsUseCase;
+
+
     @PostMapping
-    public ResponseEntity<CreateNewTariffResponse> createTariff(CreateNewTariffRequest request) {
+    public ResponseEntity<TariffResponse> createTariff(CreateNewTariffRequest request) {
 
         var command = tariffMapper.toCommand(request);
 
@@ -33,20 +35,11 @@ public class TariffController {
     }
 
     @GetMapping
-    public ResponseEntity<List<String>> listTariffs(){
-        List<String> list = List.of(
-                "tariff1",
-                "tariff2"
-        );
-        return ResponseEntity.ok(list);
+    public ResponseEntity<List<TariffResponse>> listTariffs(@RequestParam(defaultValue = "true") boolean active) {
+        var response = getAllTariffsUseCase.execute(active)
+                .stream()
+                .map(tariffMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(response);
     }
-
-    /*
-        TODO: decide how to get active tariffs
-        GET /tariff?status=active
-        or
-        GET /tariff/active
-        or
-        GET /tariff and separate (admin only?) endpoint for getting all tariffs
-     */
 }

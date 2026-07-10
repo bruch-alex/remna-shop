@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
-public record CreateNewTariffResponse(
+public record TariffResponse(
         UUID id,
         String name,
         boolean trial,
