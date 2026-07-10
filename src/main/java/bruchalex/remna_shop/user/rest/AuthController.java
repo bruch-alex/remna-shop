@@ -1,23 +1,26 @@
 package bruchalex.remna_shop.user.rest;
 
+import bruchalex.remna_shop.user.application.LoginUserUseCase;
+import bruchalex.remna_shop.user.application.RegisterUserUseCase;
 import bruchalex.remna_shop.user.rest.dto.LoginUserRequest;
 import bruchalex.remna_shop.user.rest.dto.LoginUserResponse;
 import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
 import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
-import bruchalex.remna_shop.user.application.LoginUserUseCase;
-import bruchalex.remna_shop.user.application.RegisterUserUseCase;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
+@SecurityRequirements
 public class AuthController {
     private final RegisterUserUseCase registerUserUseCase;
     private final LoginUserUseCase loginUserUseCase;

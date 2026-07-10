@@ -9,7 +9,7 @@ import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +50,7 @@ public class TariffController {
     }
 
     @GetMapping
+    @SecurityRequirements
     public ResponseEntity<List<TariffResponse>> listTariffs(@RequestParam(defaultValue = "true") boolean active) {
         var response = getAllTariffsUseCase.execute(active)
                 .stream()
