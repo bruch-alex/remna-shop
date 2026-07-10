@@ -35,6 +35,7 @@ public class SecurityConfig {
                     authz.requestMatchers("/auth/**").permitAll();
                     authz.requestMatchers("/admin/**").hasRole("ADMIN");
                     authz.requestMatchers(POST, "/tariff/**").hasRole("ADMIN");
+                    authz.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
                     authz.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

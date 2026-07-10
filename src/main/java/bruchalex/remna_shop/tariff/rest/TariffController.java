@@ -6,6 +6,10 @@ import bruchalex.remna_shop.tariff.application.UpdatePriceUseCase;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffRequest;
 import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +29,14 @@ public class TariffController {
     private final GetAllTariffsUseCase getAllTariffsUseCase;
     private final UpdatePriceUseCase updatePriceUseCase;
 
+    @Operation(
+            summary = "Create new tariff",
+            description = "Requires ADMIN role."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Created"),
+            @ApiResponse(responseCode = "403", description = "Caller is not an admin")
+    })
     @PostMapping
     public ResponseEntity<TariffResponse> createTariff(@Valid CreateNewTariffRequest request) {
 

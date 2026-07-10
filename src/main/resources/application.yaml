@@ -24,3 +24,6 @@ integration:
 logging:
   level:
     org.springframework.security: TRACE
+springdoc:
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
