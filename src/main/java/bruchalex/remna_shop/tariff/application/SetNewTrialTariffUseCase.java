@@ -2,6 +2,7 @@ package bruchalex.remna_shop.tariff.application;
 
 import bruchalex.remna_shop.tariff.domain.Tariff;
 import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
+import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class SetNewTrialTariffUseCase {
+
     private final TariffRepositoryPort tariffRepo;
+    private final TariffMapper tariffMapper;
 
     @Transactional
-    public void execute(UUID newTrialTariffUuid) {
+    public TariffResult execute(UUID newTrialTariffUuid) {
         tariffRepo.findByTrialAndEnabled(true, true)
                 .ifPresent(Tariff::disable);
 
@@ -23,5 +26,6 @@ public class SetNewTrialTariffUseCase {
         tariffRepo.flush();
 
         newTrialTariff.enable();
+        return tariffMapper.toResult(newTrialTariff);
     }
 }

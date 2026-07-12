@@ -1,9 +1,6 @@
 package bruchalex.remna_shop.tariff.rest;
 
-import bruchalex.remna_shop.tariff.application.CreateNewTariffUseCase;
-import bruchalex.remna_shop.tariff.application.DisableTariffUseCase;
-import bruchalex.remna_shop.tariff.application.GetAllTariffsUseCase;
-import bruchalex.remna_shop.tariff.application.UpdatePriceUseCase;
+import bruchalex.remna_shop.tariff.application.*;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffRequest;
 import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
@@ -30,6 +27,7 @@ public class TariffController {
     private final GetAllTariffsUseCase getAllTariffsUseCase;
     private final UpdatePriceUseCase updatePriceUseCase;
     private final DisableTariffUseCase disableTariffUseCase;
+    private final SetNewTrialTariffUseCase  setNewTrialTariffUseCase;
 
     @Operation(
             summary = "Create new tariff",
@@ -70,6 +68,12 @@ public class TariffController {
     @PostMapping("/{id}/disable")
     public ResponseEntity<TariffResponse> disable(@PathVariable UUID id) {
         var result = disableTariffUseCase.execute(id);
+        return ResponseEntity.ok(tariffMapper.toResponse(result));
+    }
+
+    @PutMapping("/{id}/trial")
+    public ResponseEntity<TariffResponse> setNewTrialTariff(@PathVariable UUID id) {
+        var result = setNewTrialTariffUseCase.execute(id);
         return ResponseEntity.ok(tariffMapper.toResponse(result));
     }
 }
