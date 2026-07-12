@@ -12,4 +12,6 @@ public interface TariffRepositoryPort extends JpaRepository<Tariff, UUID> {
     Optional<Tariff> findTariffById(UUID id);
 
     List<Tariff> findAllByEnabled(boolean active);
+
+    void disableTariff(UUID id);
 }
