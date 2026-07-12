@@ -7,7 +7,7 @@ spring:
     password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     open-in-view: false
   jackson:
     property-naming-strategy: SNAKE_CASE
