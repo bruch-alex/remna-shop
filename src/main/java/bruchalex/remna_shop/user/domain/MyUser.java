@@ -2,6 +2,7 @@ package bruchalex.remna_shop.user.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.time.Instant;
 @Entity
 @Getter
 @AllArgsConstructor
+@Builder
 public class MyUser {
 
     @EmbeddedId

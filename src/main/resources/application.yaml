@@ -15,6 +15,10 @@ app:
   jwt:
     secret: ${JWT_SECRET}
     expiration: PT1H
+  superuser:
+    username: ${SUPERUSER_USERNAME}
+    password: ${SUPERUSER_PASSWORD}
+    email: ${SUPERUSER_EMAIL}
 
 integration:
   remnawave:
