@@ -5,6 +5,7 @@ import bruchalex.remna_shop.tariff.application.CreateNewTariffCommand;
 import bruchalex.remna_shop.tariff.application.CreateNewTariffUseCase;
 import bruchalex.remna_shop.tariff.application.GetAllTariffsUseCase;
 import bruchalex.remna_shop.tariff.application.SetNewTrialTariffUseCase;
+import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -19,8 +20,15 @@ public class DevTariffSeeder implements CommandLineRunner {
     private final SetNewTrialTariffUseCase setNewTrialTariffUseCase;
     private final GetAllTariffsUseCase getAllTariffsUseCase;
 
+    private final TariffRepositoryPort tariffRepo;
+
     @Override
     public void run(String... args) throws Exception {
+
+        if (!tariffRepo.findAll().isEmpty()){
+            return;
+        }
+
         var command = new CreateNewTariffCommand(
                 "Test Tariff",
                 100,
