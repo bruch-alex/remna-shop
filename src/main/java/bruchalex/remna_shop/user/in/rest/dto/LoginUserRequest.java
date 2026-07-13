@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.user.rest.dto;
+package bruchalex.remna_shop.user.in.rest.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

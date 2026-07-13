@@ -1,11 +1,11 @@
-package bruchalex.remna_shop.user.rest;
+package bruchalex.remna_shop.user.in.rest;
 
 import bruchalex.remna_shop.user.application.LoginUserUseCase;
 import bruchalex.remna_shop.user.application.RegisterUserUseCase;
-import bruchalex.remna_shop.user.rest.dto.LoginUserRequest;
-import bruchalex.remna_shop.user.rest.dto.LoginUserResponse;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
+import bruchalex.remna_shop.user.in.rest.dto.LoginUserRequest;
+import bruchalex.remna_shop.user.in.rest.dto.LoginUserResponse;
+import bruchalex.remna_shop.user.in.rest.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.in.rest.dto.RegisterUserResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

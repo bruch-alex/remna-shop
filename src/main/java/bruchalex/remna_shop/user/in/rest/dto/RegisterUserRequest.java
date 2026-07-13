@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.user.rest.dto;
+package bruchalex.remna_shop.user.in.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
