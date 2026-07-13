@@ -1,7 +1,7 @@
 package bruchalex.remna_shop.tariff.application;
 
 import bruchalex.remna_shop.tariff.domain.Tariff;
-import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
+import bruchalex.remna_shop.tariff.domain.TariffRepo;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateNewTariffUseCase {
 
-    private final TariffRepositoryPort tariffRepo;
+    private final TariffRepo tariffRepo;
     private final TariffMapper tariffMapper;
 
     public TariffResult execute(CreateNewTariffCommand command) {

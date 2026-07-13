@@ -1,7 +1,7 @@
 package bruchalex.remna_shop.tariff.application;
 
 import bruchalex.remna_shop.tariff.domain.Tariff;
-import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
+import bruchalex.remna_shop.tariff.domain.TariffRepo;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SetNewTrialTariffUseCase {
 
-    private final TariffRepositoryPort tariffRepo;
+    private final TariffRepo tariffRepo;
     private final TariffMapper tariffMapper;
 
     @Transactional

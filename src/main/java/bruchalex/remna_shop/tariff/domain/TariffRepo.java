@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TariffRepositoryPort extends JpaRepository<Tariff, UUID> {
+public interface TariffRepo extends JpaRepository<Tariff, UUID> {
     Optional<Tariff> findByTrialAndEnabled(boolean trial, boolean enabled);
 
     Optional<Tariff> findTariffById(UUID id);
