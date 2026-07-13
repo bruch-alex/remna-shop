@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.tariff.rest.dto;
+package bruchalex.remna_shop.tariff.in.rest.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

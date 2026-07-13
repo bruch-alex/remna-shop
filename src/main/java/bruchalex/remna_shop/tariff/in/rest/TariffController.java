@@ -1,9 +1,9 @@
-package bruchalex.remna_shop.tariff.rest;
+package bruchalex.remna_shop.tariff.in.rest;
 
 import bruchalex.remna_shop.tariff.application.*;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
-import bruchalex.remna_shop.tariff.rest.dto.CreateNewTariffRequest;
-import bruchalex.remna_shop.tariff.rest.dto.TariffResponse;
+import bruchalex.remna_shop.tariff.in.rest.dto.CreateNewTariffRequest;
+import bruchalex.remna_shop.tariff.in.rest.dto.TariffResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
