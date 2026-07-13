@@ -7,19 +7,22 @@ spring:
     password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     open-in-view: false
   jackson:
     property-naming-strategy: SNAKE_CASE
-app:
+remnashop:
   jwt:
     secret: ${JWT_SECRET}
     expiration: PT1H
-
-integration:
-  remnawave:
-    base-url: ${REMNAWAVE_URL}
-    api-key: ${REMNAWAVE_API_KEY}
+  superuser:
+    username: ${SUPERUSER_USERNAME}
+    password: ${SUPERUSER_PASSWORD}
+    email: ${SUPERUSER_EMAIL}
+  integration:
+    remnawave:
+      base-url: ${REMNAWAVE_URL}
+      api-key: ${REMNAWAVE_API_KEY}
 
 logging:
   level:

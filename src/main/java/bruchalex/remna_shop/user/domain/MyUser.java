@@ -3,12 +3,14 @@ package bruchalex.remna_shop.user.domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
 @Entity
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MyUser {
 
     @EmbeddedId
@@ -29,10 +31,10 @@ public class MyUser {
 
     private Instant createdAt;
 
-    // Required by JPA
-    protected MyUser() {}
+    private Instant updatedAt;
 
     public static MyUser create(Email email, HashedPassword hashedPassword, UserRole role) {
-        return new MyUser(new UserId(), email, hashedPassword, role, Instant.now());
+        var now = Instant.now();
+        return new MyUser(new UserId(), email, hashedPassword, role, now, now);
     }
 }

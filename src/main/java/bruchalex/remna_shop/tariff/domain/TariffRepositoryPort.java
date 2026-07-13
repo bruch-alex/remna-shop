@@ -1,6 +1,8 @@
 package bruchalex.remna_shop.tariff.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,5 +15,11 @@ public interface TariffRepositoryPort extends JpaRepository<Tariff, UUID> {
 
     List<Tariff> findAllByEnabled(boolean active);
 
+    @Modifying
+    @Query("""
+           update Tariff t 
+           set t.enabled = false 
+           where t.id = :id
+           """)
     void disableTariff(UUID id);
 }

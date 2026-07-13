@@ -7,7 +7,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-@ConfigurationProperties(prefix = "app.jwt")
+@ConfigurationProperties(prefix = "remnashop.jwt")
 public record JwtProperties(String secret, Duration expiration) {
 
     public SecretKey secretKey() {
