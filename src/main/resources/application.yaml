@@ -11,7 +11,7 @@ spring:
     open-in-view: false
   jackson:
     property-naming-strategy: SNAKE_CASE
-app:
+remnashop:
   jwt:
     secret: ${JWT_SECRET}
     expiration: PT1H
@@ -19,11 +19,10 @@ app:
     username: ${SUPERUSER_USERNAME}
     password: ${SUPERUSER_PASSWORD}
     email: ${SUPERUSER_EMAIL}
-
-integration:
-  remnawave:
-    base-url: ${REMNAWAVE_URL}
-    api-key: ${REMNAWAVE_API_KEY}
+  integration:
+    remnawave:
+      base-url: ${REMNAWAVE_URL}
+      api-key: ${REMNAWAVE_API_KEY}
 
 logging:
   level:
