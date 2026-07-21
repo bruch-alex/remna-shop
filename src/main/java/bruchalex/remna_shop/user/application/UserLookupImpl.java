@@ -19,9 +19,8 @@ public class UserLookupImpl implements UserLookup {
     public Optional<UserSummary> findById(UUID id) {
         return userRepo.findById(UserId.of(id))
                 .map(user -> new UserSummary(
-                        user.getId().value(),
+                        user.getUuid().value(),
                         user.getEmail().value(),
-                        user.getVpnProfileUuid(),
                         user.getRole().getValue(),
                         user.getCreatedAt(),
                         user.getUpdatedAt()

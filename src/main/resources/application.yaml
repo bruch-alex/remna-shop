@@ -5,9 +5,14 @@ spring:
     url: ${POSTGRES_URL}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  sql:
+    init:
+      mode: always
+      platform: postgresql  # picks up schema-postgresql.sql instead
+      continue-on-error: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     open-in-view: false
   jackson:
     property-naming-strategy: SNAKE_CASE
@@ -27,6 +32,7 @@ remnashop:
 logging:
   level:
     org.springframework.security: TRACE
+    org.springframework.web.client: TRACE
 springdoc:
     default-consumes-media-type: application/json
     default-produces-media-type: application/json

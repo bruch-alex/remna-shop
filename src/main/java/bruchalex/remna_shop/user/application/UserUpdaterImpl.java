@@ -18,7 +18,7 @@ public class UserUpdaterImpl implements UserUpdater {
     @Transactional
     public void assignVpnProfile(UUID userUuid, UUID vpnProfileUuid) {
         var user = userRepository.findById(UserId.of(userUuid)).orElseThrow();
-        user.assignVpnProfile(vpnProfileUuid);
+//        user.assignVpnProfile(vpnProfileUuid);
         userRepository.save(user);
     }
 }

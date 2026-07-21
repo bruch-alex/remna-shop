@@ -1,7 +1,7 @@
 package bruchalex.remna_shop.user.infra.bootstrap;
 
 import bruchalex.remna_shop.user.domain.*;
-import bruchalex.remna_shop.user.rest.UserExceptionHandler;
+import bruchalex.remna_shop.user.in.rest.UserExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

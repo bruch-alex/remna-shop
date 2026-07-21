@@ -3,7 +3,7 @@ package bruchalex.remna_shop.user.application;
 import bruchalex.remna_shop.user.domain.Email;
 import bruchalex.remna_shop.user.domain.UserRepository;
 import bruchalex.remna_shop.user.domain.exception.UserAlreadyExistsException;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.in.rest.dto.RegisterUserRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
