@@ -1,23 +1,21 @@
-package bruchalex.remna_shop.vpn.domain;
+package bruchalex.remna_shop.vpn.adapter.out.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
-@Table(name = "vpn.vpn_profile")
+@Table(name = "profile", schema = "vpn")
 @Getter
-public class VpnProfile {
+public class ProfileJpaEntity {
+
     @Id
     private UUID uuid;
     private UUID userUuid;
@@ -31,4 +29,7 @@ public class VpnProfile {
 
     private String telegramId;
     private String label;
+
+    @OneToMany(mappedBy = "profile")
+    private List<DeviceLabelJpaEntity> labels;
 }

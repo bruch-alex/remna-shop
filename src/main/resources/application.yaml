@@ -11,6 +11,10 @@ spring:
     open-in-view: false
   jackson:
     property-naming-strategy: SNAKE_CASE
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
 remnashop:
   jwt:
     secret: ${JWT_SECRET}
@@ -28,5 +32,5 @@ logging:
   level:
     org.springframework.security: TRACE
 springdoc:
-    default-consumes-media-type: application/json
-    default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json

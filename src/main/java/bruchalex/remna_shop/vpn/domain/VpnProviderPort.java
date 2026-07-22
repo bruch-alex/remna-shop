@@ -7,7 +7,7 @@ import java.util.List;
 public interface VpnProviderPort {
     AuthResponse getAuthStatus();
 
-    VpnProfile create(VpnProfile vpnProfile);
+    Profile create(Profile profile);
 
-    List<VpnProfile> getVpnProfileByTelegramId(String telegramId);
+    List<Profile> getVpnProfileByTelegramId(String telegramId);
 }

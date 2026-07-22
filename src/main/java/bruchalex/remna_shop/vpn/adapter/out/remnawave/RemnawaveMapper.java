@@ -1,7 +1,7 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.UserResponse;
-import bruchalex.remna_shop.vpn.domain.VpnProfile;
+import bruchalex.remna_shop.vpn.domain.Profile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -18,7 +18,7 @@ public interface RemnawaveMapper {
     @Mapping(target = "label", source = "description")
     @Mapping(target = "expiresAt", source = "expireAt")
     @Mapping(target = "trafficLimitGb", source = "trafficLimitBytes", qualifiedByName = "bytesToGb")
-    VpnProfile toVpnProfile(UserResponse response);
+    Profile toVpnProfile(UserResponse response);
 
     @Named("bytesToGb")
     default Integer bytesToGb(Long bytes) {

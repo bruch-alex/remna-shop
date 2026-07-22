@@ -3,7 +3,7 @@ package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.AuthResponse;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.CreateUserRequest;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
-import bruchalex.remna_shop.vpn.domain.VpnProfile;
+import bruchalex.remna_shop.vpn.domain.Profile;
 import bruchalex.remna_shop.vpn.domain.VpnProviderException;
 import bruchalex.remna_shop.vpn.domain.VpnProviderPort;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class RemnawaveAdapter implements VpnProviderPort {
     }
 
     @Override
-    public VpnProfile create(VpnProfile vpnProfile) {
-        var request = CreateUserRequest.builder().username(vpnProfile.getUuid()).expireAt(vpnProfile.getExpiresAt()).build();
+    public Profile create(Profile profile) {
+        var request = CreateUserRequest.builder().username(profile.getUuid()).expireAt(profile.getExpiresAt()).build();
         try {
             var response = remnawaveRestClient.createUser(request).response();
             return remnawaveMapper.toVpnProfile(response);
@@ -35,7 +35,7 @@ public class RemnawaveAdapter implements VpnProviderPort {
     }
 
     @Override
-    public List<VpnProfile> getVpnProfileByTelegramId(String telegramId) {
+    public List<Profile> getVpnProfileByTelegramId(String telegramId) {
         try {
             return remnawaveRestClient.getUserByTelegramId(telegramId).response().stream().map(remnawaveMapper::toVpnProfile).toList();
         } catch (RemnawaveApiException e) {
