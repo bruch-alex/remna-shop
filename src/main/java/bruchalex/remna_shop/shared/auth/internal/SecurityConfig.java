@@ -18,8 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.http.HttpMethod.*;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -32,11 +30,12 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> {
-                    authz.requestMatchers("/auth/**").permitAll();
-                    authz.requestMatchers("/admin/**").hasRole("ADMIN");
-                    authz.requestMatchers(POST, "/tariff/**").hasRole("ADMIN");
-                    authz.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
-                    authz.anyRequest().authenticated();
+                    authz.anyRequest().permitAll();
+//                    authz.requestMatchers("/auth/**").permitAll();
+//                    authz.requestMatchers("/admin/**").hasRole("ADMIN");
+//                    authz.requestMatchers(POST, "/tariff/**").hasRole("ADMIN");
+//                    authz.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
+//                    authz.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

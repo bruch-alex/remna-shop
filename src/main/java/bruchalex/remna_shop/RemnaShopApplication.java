@@ -1,13 +1,11 @@
 package bruchalex.remna_shop;
 
-import bruchalex.remna_shop.user.infra.bootstrap.SuperUserProperties;
-import bruchalex.remna_shop.shared.auth.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.modulith.Modulithic;
 
 @SpringBootApplication
-@EnableConfigurationProperties({JwtProperties.class, SuperUserProperties.class})
+@Modulithic
 public class RemnaShopApplication {
 
     static void main(String[] args) {

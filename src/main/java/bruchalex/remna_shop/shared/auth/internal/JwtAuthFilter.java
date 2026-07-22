@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
+@EnableConfigurationProperties(JwtProperties.class)
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtProperties properties;

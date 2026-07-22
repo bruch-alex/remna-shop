@@ -6,13 +6,13 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ErrorResponse(String message, OffsetDateTime timestamp, List<ValidationError> fieldValidationErrors) {
+public record ErrorResponse(String message, OffsetDateTime timestamp, List<FieldError> fieldFieldErrors) {
 
     public ErrorResponse(String message) {
         this(message, OffsetDateTime.now(), null);
     }
 
-    public ErrorResponse(String message, List<ValidationError> fieldValidationErrors) {
-        this(message, OffsetDateTime.now(), fieldValidationErrors);
+    public ErrorResponse(String message, List<FieldError> fieldFieldErrors) {
+        this(message, OffsetDateTime.now(), fieldFieldErrors);
     }
 }

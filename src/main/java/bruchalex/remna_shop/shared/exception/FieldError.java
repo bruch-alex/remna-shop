@@ -1,6 +1,6 @@
 package bruchalex.remna_shop.shared.exception;
 
-public record ValidationError(
+public record FieldError(
         String field,
         String message
 ) {
