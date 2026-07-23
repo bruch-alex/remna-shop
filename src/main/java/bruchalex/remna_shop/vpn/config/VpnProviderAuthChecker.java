@@ -1,6 +1,6 @@
 package bruchalex.remna_shop.vpn.config;
 
-import bruchalex.remna_shop.vpn.domain.VpnConnectivityPort;
+import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;

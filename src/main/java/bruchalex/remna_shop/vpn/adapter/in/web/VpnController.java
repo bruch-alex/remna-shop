@@ -1,6 +1,6 @@
 package bruchalex.remna_shop.vpn.adapter.in.web;
 
-import bruchalex.remna_shop.vpn.domain.VpnConnectivityPort;
+import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

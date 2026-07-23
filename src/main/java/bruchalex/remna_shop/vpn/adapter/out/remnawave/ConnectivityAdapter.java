@@ -2,7 +2,7 @@ package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.client.RemnawaveSystemClient;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
-import bruchalex.remna_shop.vpn.domain.VpnConnectivityPort;
+import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
