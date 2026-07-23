@@ -1,6 +1,6 @@
 package bruchalex.remna_shop.vpn.config;
 
-import bruchalex.remna_shop.vpn.domain.VpnProviderPort;
+import bruchalex.remna_shop.vpn.domain.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -17,13 +17,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Slf4j
 public class VpnProviderAuthChecker {
 
-    private final VpnProviderPort vpnProviderPort;
+    private final VpnConnectivityPort vpnConnectivityPort;
     private final ConfigurableApplicationContext context;
     private final AtomicBoolean lastKnownState = new AtomicBoolean(false);
 
     @EventListener(ApplicationReadyEvent.class)
     public void checkAuthOnStartup() {
-        if (!vpnProviderPort.isAuthenticated()) {
+        if (!vpnConnectivityPort.isAuthenticated()) {
             log.error("Cannot authenticate with VPN provider — shutting down");
             int exitCode = SpringApplication.exit(context, () -> 1);
             System.exit(exitCode);
@@ -34,14 +34,14 @@ public class VpnProviderAuthChecker {
     }
 
     @Scheduled(initialDelay = 30_000, fixedDelay = 30_000)
-    public void checkAuthPeriodically() {
-        boolean authenticated = vpnProviderPort.isAuthenticated();
-        boolean wasAuthenticated = lastKnownState.getAndSet(authenticated);
+    public void checkConnectionPeriodically() {
+        boolean connected = vpnConnectivityPort.isConnected();
+        boolean wasConnected = lastKnownState.getAndSet(connected);
 
-        if (authenticated && !wasAuthenticated) {
-            log.info("VPN provider authentication recovered");
-        } else if (!authenticated && wasAuthenticated) {
-            log.error("Lost authentication with VPN provider");
+        if (connected && !wasConnected) {
+            log.info("VPN provider connection recovered");
+        } else if (!connected && wasConnected) {
+            log.error("Lost connection with VPN provider");
         }
     }
 }
