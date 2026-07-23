@@ -1,5 +1,7 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
+import bruchalex.remna_shop.vpn.adapter.out.remnawave.client.RemnawaveSystemClient;
+import bruchalex.remna_shop.vpn.adapter.out.remnawave.client.RemnawaveUserClient;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.CreateUserRequest;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
 import bruchalex.remna_shop.vpn.domain.Profile;
@@ -17,13 +19,14 @@ import java.util.List;
 @Slf4j
 public class RemnawaveAdapter implements VpnProviderPort {
 
-    private final RemnawaveRestClient remnawaveRestClient;
+    private final RemnawaveUserClient remnawaveUserClient;
+    private final RemnawaveSystemClient remnawaveSystemClient;
     private final RemnawaveMapper remnawaveMapper;
 
     @Override
     public boolean isAuthenticated() {
         try {
-            var info = remnawaveRestClient.getRemnawaveInformation().response();
+            var info = remnawaveSystemClient.getRemnawaveInformation().response();
             log.debug("Connected to Remnawave Backend version: {}", info.version());
             return true;
         } catch (ResourceAccessException _) {
@@ -38,7 +41,7 @@ public class RemnawaveAdapter implements VpnProviderPort {
     @Override
     public boolean isConnected() {
         try {
-            remnawaveRestClient.getRemnawaveInformation();
+            remnawaveSystemClient.getRemnawaveInformation();
             return true;
         } catch (ResourceAccessException _) {
             log.debug("Remnawave is unreachable. Network error");
@@ -52,7 +55,7 @@ public class RemnawaveAdapter implements VpnProviderPort {
     public Profile create(Profile profile) {
         var request = CreateUserRequest.builder().username(profile.getUuid()).expireAt(profile.getExpiresAt()).build();
         try {
-            var response = remnawaveRestClient.createUser(request).response();
+            var response = remnawaveUserClient.createUser(request).response();
             return remnawaveMapper.toVpnProfile(response);
         } catch (RemnawaveApiException _) {
             throw new VpnProviderException();
@@ -62,7 +65,7 @@ public class RemnawaveAdapter implements VpnProviderPort {
     @Override
     public List<Profile> getVpnProfileByTelegramId(String telegramId) {
         try {
-            return remnawaveRestClient.getUserByTelegramId(telegramId).response().stream().map(remnawaveMapper::toVpnProfile).toList();
+            return remnawaveUserClient.getUserByTelegramId(telegramId).response().stream().map(remnawaveMapper::toVpnProfile).toList();
         } catch (RemnawaveApiException e) {
             throw new VpnProviderException();
         }

@@ -1,5 +1,7 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
+import bruchalex.remna_shop.vpn.adapter.out.remnawave.client.RemnawaveSystemClient;
+import bruchalex.remna_shop.vpn.adapter.out.remnawave.client.RemnawaveUserClient;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,8 @@ public class RemnawaveHttpConfig {
     private final ObjectMapper objectMapper;
 
     @Bean
-    RemnawaveRestClient remnawaveRestClient(RemnawaveProperties properties) {
-        var restClient = RestClient.builder()
+    RestClient restClient(RemnawaveProperties properties) {
+        return RestClient.builder()
                 .baseUrl(properties.baseUrl())
                 .defaultHeader("Authorization", "Bearer " + properties.apiKey())
                 .defaultStatusHandler(HttpStatusCode::isError, (_, res) -> {
@@ -32,10 +34,22 @@ public class RemnawaveHttpConfig {
                     throw new RemnawaveApiException(error);
                 })
                 .build();
+    }
 
+    @Bean
+    public HttpServiceProxyFactory remnawaveProxyFactory(RestClient remnawaveRestClient) {
         return HttpServiceProxyFactory
-                .builderFor(RestClientAdapter.create(restClient))
-                .build()
-                .createClient(RemnawaveRestClient.class);
+                .builderFor(RestClientAdapter.create(remnawaveRestClient))
+                .build();
+    }
+
+    @Bean
+    public RemnawaveUserClient remnawaveUserClient(HttpServiceProxyFactory factory) {
+        return factory.createClient(RemnawaveUserClient.class);
+    }
+
+    @Bean
+    public RemnawaveSystemClient remnawaveSystemClient(HttpServiceProxyFactory factory) {
+        return factory.createClient(RemnawaveSystemClient.class);
     }
 }
