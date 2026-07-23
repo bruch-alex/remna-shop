@@ -25,12 +25,26 @@ public class RemnawaveAdapter implements VpnProviderPort {
         try {
             var info = remnawaveRestClient.getRemnawaveInformation().response();
             log.debug("Connected to Remnawave Backend version: {}", info.version());
-            return info.version() != null;
+            return true;
+        } catch (ResourceAccessException _) {
+            log.debug("Remnawave is unreachable. Network error");
+            return false;
+        } catch (RemnawaveApiException e) {
+            log.debug("Not authenticated with Remnawave: status={}", e.getStatus());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isConnected() {
+        try {
+            remnawaveRestClient.getRemnawaveInformation();
+            return true;
         } catch (ResourceAccessException _) {
             log.debug("Remnawave is unreachable. Network error");
             return false;
         } catch (RemnawaveApiException _) {
-            return false;
+            return true;
         }
     }
 

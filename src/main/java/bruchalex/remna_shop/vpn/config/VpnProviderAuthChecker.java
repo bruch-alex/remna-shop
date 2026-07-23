@@ -3,10 +3,14 @@ package bruchalex.remna_shop.vpn.config;
 import bruchalex.remna_shop.vpn.domain.VpnProviderPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 @RequiredArgsConstructor
@@ -14,19 +18,29 @@ import org.springframework.stereotype.Component;
 public class VpnProviderAuthChecker {
 
     private final VpnProviderPort vpnProviderPort;
+    private final ConfigurableApplicationContext context;
+    private final AtomicBoolean lastKnownState = new AtomicBoolean(false);
 
     @EventListener(ApplicationReadyEvent.class)
     public void checkAuthOnStartup() {
         if (!vpnProviderPort.isAuthenticated()) {
-            throw new IllegalStateException("Cannot authenticate with VPN provider — aborting startup");
+            log.error("Cannot authenticate with VPN provider — shutting down");
+            int exitCode = SpringApplication.exit(context, () -> 1);
+            System.exit(exitCode);
+            return;
         }
-        log.info("Connection to VPN provider established");
+        log.info("VPN provider is authenticated");
+        lastKnownState.set(true);
     }
 
-    @Scheduled(fixedDelay = 15_000)
+    @Scheduled(initialDelay = 30_000, fixedDelay = 30_000)
     public void checkAuthPeriodically() {
         boolean authenticated = vpnProviderPort.isAuthenticated();
-        if (!authenticated) {
+        boolean wasAuthenticated = lastKnownState.getAndSet(authenticated);
+
+        if (authenticated && !wasAuthenticated) {
+            log.info("VPN provider authentication recovered");
+        } else if (!authenticated && wasAuthenticated) {
             log.error("Lost authentication with VPN provider");
         }
     }
