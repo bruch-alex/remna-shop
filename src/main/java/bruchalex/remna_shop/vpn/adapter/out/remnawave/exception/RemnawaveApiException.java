@@ -27,16 +27,15 @@ public class RemnawaveApiException extends RuntimeException {
     }
 
     public RemnawaveApiException(RemnawaveErrorResponse errorResponse) {
-        if (errorResponse.getTimestamp() != null) {
-            this.message = errorResponse.getTimestamp().toString();
-            this.status = errorResponse.getStatus();
-            this.errors = Collections.emptyList();
-            return;
-        }
-
-        this.message = errorResponse.getMessage();
         this.status = errorResponse.getStatus();
-        this.errors = errorResponse.getErrors().stream().map(e -> new FieldError(e.path().getFirst(), e.invalidString())).toList();
+        this.message = errorResponse.getMessage();
 
+        List<RemnawaveErrorResponse.RemnawaveFieldError> rawErrors = errorResponse.getErrors();
+
+        this.errors = (rawErrors != null)
+                ? rawErrors.stream()
+                .map(e -> new FieldError(e.path().getFirst(), e.invalidString()))
+                .toList()
+                : Collections.emptyList();
     }
 }

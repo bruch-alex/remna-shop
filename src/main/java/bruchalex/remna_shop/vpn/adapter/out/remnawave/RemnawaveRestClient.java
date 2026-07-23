@@ -1,7 +1,7 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
-import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.AuthResponse;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.CreateUserRequest;
+import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.RemnawaveMetadataResponse;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.RemnawaveResponse;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.UserResponse;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
@@ -14,8 +14,8 @@ import java.util.List;
 
 public interface RemnawaveRestClient {
 
-    @GetExchange("/auth/status")
-    RemnawaveResponse<AuthResponse> getAuthStatus();
+    @GetExchange("/system/metadata")
+    RemnawaveResponse<RemnawaveMetadataResponse> getRemnawaveInformation();
 
     @PostExchange("/users")
     RemnawaveResponse<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) throws RemnawaveApiException;

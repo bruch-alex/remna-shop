@@ -1,26 +1,37 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
-import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.AuthResponse;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.dto.CreateUserRequest;
 import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
 import bruchalex.remna_shop.vpn.domain.Profile;
 import bruchalex.remna_shop.vpn.domain.VpnProviderException;
 import bruchalex.remna_shop.vpn.domain.VpnProviderPort;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RemnawaveAdapter implements VpnProviderPort {
 
     private final RemnawaveRestClient remnawaveRestClient;
     private final RemnawaveMapper remnawaveMapper;
 
     @Override
-    public AuthResponse getAuthStatus() {
-        return remnawaveRestClient.getAuthStatus().response();
+    public boolean isAuthenticated() {
+        try {
+            var info = remnawaveRestClient.getRemnawaveInformation().response();
+            log.debug("Connected to Remnawave Backend version: {}", info.version());
+            return info.version() != null;
+        } catch (ResourceAccessException _) {
+            log.debug("Remnawave is unreachable. Network error");
+            return false;
+        } catch (RemnawaveApiException _) {
+            return false;
+        }
     }
 
     @Override
