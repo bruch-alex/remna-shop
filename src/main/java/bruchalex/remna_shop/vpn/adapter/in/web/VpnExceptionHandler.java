@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class VpnExceptionHandler {
 
     @ExceptionHandler(VpnProviderException.class)
-    public ResponseEntity<ErrorResponse> handleVpnException(VpnProviderException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse(ex.getMessage()));
+    public ResponseEntity<ErrorResponse> handleVpnException(
+        VpnProviderException ex
+    ) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            new ErrorResponse(ex.getMessage())
+        );
     }
-
 }

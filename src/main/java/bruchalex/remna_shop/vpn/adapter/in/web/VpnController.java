@@ -16,7 +16,7 @@ public class VpnController {
 
     @GetMapping("/check-auth")
     public ResponseEntity<Boolean> isAuthenticated() {
-        var authenticated = vpnConnectivityPort.isAuthenticated();
+        final var authenticated = vpnConnectivityPort.isAuthenticated();
         return ResponseEntity.ok(authenticated);
     }
 }

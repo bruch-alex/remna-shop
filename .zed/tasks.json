@@ -1,0 +1,27 @@
+[
+  {
+    "label": "Docker Compose Rebuild",
+    "command": "bash",
+    "args": [
+      "-lc",
+      "docker compose down && docker compose up --build && docker compose logs -f"
+    ],
+    "use_new_terminal": true
+  },
+  {
+    "label": "Test Docker Task",
+    "command": "echo",
+    "args": [
+      "Hello from Zed task"
+    ],
+    "use_new_terminal": true
+  },
+  {
+    "label": "Hello",
+    "command": "/usr/bin/bash",
+    "args": [
+          "-lc",
+          "echo hello; sleep 10"
+        ],
+  }
+]
