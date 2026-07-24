@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.tariff.rest.dto;
+package bruchalex.remna_shop.tariff.adapter.in.web.dto;
 
 import java.time.Instant;
 import java.util.UUID;
