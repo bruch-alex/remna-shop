@@ -1,6 +1,8 @@
 package bruchalex.remna_shop.tariff.adapter.in.web;
 
 import bruchalex.remna_shop.tariff.application.*;
+import bruchalex.remna_shop.tariff.application.port.in.web.CreateNewTariffUseCase;
+import bruchalex.remna_shop.tariff.application.port.in.web.UpdateTariffPriceUseCase;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import bruchalex.remna_shop.tariff.adapter.in.web.dto.CreateNewTariffRequest;
 import bruchalex.remna_shop.tariff.adapter.in.web.dto.TariffResponse;
@@ -24,10 +26,10 @@ public class TariffController {
     private final TariffMapper tariffMapper;
 
     private final CreateNewTariffUseCase createNewTariffUseCase;
-    private final GetAllTariffsUseCase getAllTariffsUseCase;
-    private final UpdatePriceUseCase updatePriceUseCase;
-    private final DisableTariffUseCase disableTariffUseCase;
-    private final SetNewTrialTariffUseCase  setNewTrialTariffUseCase;
+    private final GetAllTariffsService getAllTariffsService;
+    private final UpdatePriceService updatePriceService;
+    private final DisableTariffService disableTariffUseCase;
+    private final SetNewTrialTariffService setNewTrialTariffService;
 
     @Operation(
             summary = "Create new tariff",
@@ -40,9 +42,7 @@ public class TariffController {
     @PostMapping
     public ResponseEntity<TariffResponse> createTariff(@Valid CreateNewTariffRequest request) {
 
-        var command = tariffMapper.toCommand(request);
-
-        var result = createNewTariffUseCase.execute(command);
+        var result = createNewTariffUseCase.execute(tariffMapper.toCommand(request));
 
         var response = tariffMapper.toResponse(result);
 
@@ -52,7 +52,7 @@ public class TariffController {
     @GetMapping
     @SecurityRequirements
     public ResponseEntity<List<TariffResponse>> listTariffs(@RequestParam(defaultValue = "true") boolean active) {
-        var response = getAllTariffsUseCase.execute(active)
+        var response = getAllTariffsService.execute(active)
                 .stream()
                 .map(tariffMapper::toResponse)
                 .toList();
@@ -61,7 +61,8 @@ public class TariffController {
 
     @PutMapping("/{id}/price")
     public ResponseEntity<TariffResponse> updatePrice(@RequestBody Integer price, @PathVariable UUID id) {
-        var result = updatePriceUseCase.execute(id, price);
+        var command = new UpdateTariffPriceUseCase.Command(id, price);
+        var result = updatePriceService.execute(command);
         return ResponseEntity.ok(tariffMapper.toResponse(result));
     }
 
@@ -73,7 +74,7 @@ public class TariffController {
 
     @PutMapping("/{id}/trial")
     public ResponseEntity<TariffResponse> setNewTrialTariff(@PathVariable UUID id) {
-        var result = setNewTrialTariffUseCase.execute(id);
+        var result = setNewTrialTariffService.execute(id);
         return ResponseEntity.ok(tariffMapper.toResponse(result));
     }
 }

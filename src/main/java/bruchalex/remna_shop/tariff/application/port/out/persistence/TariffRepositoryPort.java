@@ -1,5 +1,6 @@
-package bruchalex.remna_shop.tariff.domain;
+package bruchalex.remna_shop.tariff.application.port.out.persistence;
 
+import bruchalex.remna_shop.tariff.domain.Tariff;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,9 +18,9 @@ public interface TariffRepositoryPort extends JpaRepository<Tariff, UUID> {
 
     @Modifying
     @Query("""
-           update Tariff t 
-           set t.enabled = false 
-           where t.id = :id
-           """)
+            update Tariff t 
+            set t.enabled = false 
+            where t.id = :id
+            """)
     void disableTariff(UUID id);
 }

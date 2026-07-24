@@ -1,11 +1,10 @@
 package bruchalex.remna_shop.tariff.infra.bootstrap;
 
 
-import bruchalex.remna_shop.tariff.application.CreateNewTariffCommand;
-import bruchalex.remna_shop.tariff.application.CreateNewTariffUseCase;
-import bruchalex.remna_shop.tariff.application.GetAllTariffsUseCase;
-import bruchalex.remna_shop.tariff.application.SetNewTrialTariffUseCase;
-import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
+import bruchalex.remna_shop.tariff.application.CreateNewTariffService;
+import bruchalex.remna_shop.tariff.application.GetAllTariffsService;
+import bruchalex.remna_shop.tariff.application.SetNewTrialTariffService;
+import bruchalex.remna_shop.tariff.application.port.out.persistence.TariffRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DevTariffSeeder implements CommandLineRunner {
 
-    private final CreateNewTariffUseCase createNewTariffUseCase;
-    private final SetNewTrialTariffUseCase setNewTrialTariffUseCase;
-    private final GetAllTariffsUseCase getAllTariffsUseCase;
+    private final CreateNewTariffService createNewTariffService;
+    private final SetNewTrialTariffService setNewTrialTariffService;
+    private final GetAllTariffsService getAllTariffsService;
 
     private final TariffRepositoryPort tariffRepo;
 
@@ -42,14 +41,14 @@ public class DevTariffSeeder implements CommandLineRunner {
                 7,
                 100
         );
-        createNewTariffUseCase.execute(command);
-        createNewTariffUseCase.execute(commandTrial);
+        createNewTariffService.execute(command);
+        createNewTariffService.execute(commandTrial);
 
-        var tariffs = getAllTariffsUseCase.execute(false);
+        var tariffs = getAllTariffsService.execute(false);
 
         for (var tariff : tariffs) {
             if (tariff.name().equals("Trial Tariff")) {
-                setNewTrialTariffUseCase.execute(tariff.id());
+                setNewTrialTariffService.execute(tariff.id());
                 break;
             }
         }

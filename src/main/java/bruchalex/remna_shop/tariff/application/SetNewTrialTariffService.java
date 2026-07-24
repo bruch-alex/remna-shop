@@ -1,7 +1,9 @@
 package bruchalex.remna_shop.tariff.application;
 
+import bruchalex.remna_shop.tariff.application.port.in.web.SetNewTrialTariffUseCase;
+import bruchalex.remna_shop.tariff.application.port.in.web.TariffResult;
 import bruchalex.remna_shop.tariff.domain.Tariff;
-import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
+import bruchalex.remna_shop.tariff.application.port.out.persistence.TariffRepositoryPort;
 import bruchalex.remna_shop.tariff.infra.TariffMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +13,15 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class SetNewTrialTariffUseCase {
-
+public class SetNewTrialTariffService implements SetNewTrialTariffUseCase {
+    
     private final TariffRepositoryPort tariffRepo;
     private final TariffMapper tariffMapper;
 
     @Transactional
+    @Override
     public TariffResult execute(UUID newTrialTariffUuid) {
-        tariffRepo.findByTrialAndEnabled(true, true)
-                .ifPresent(Tariff::disable);
+        tariffRepo.findByTrialAndEnabled(true, true).ifPresent(Tariff::disable);
 
         var newTrialTariff = tariffRepo.findTariffById(newTrialTariffUuid).orElseThrow();
 

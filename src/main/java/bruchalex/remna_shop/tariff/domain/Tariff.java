@@ -1,6 +1,6 @@
 package bruchalex.remna_shop.tariff.domain;
 
-import bruchalex.remna_shop.tariff.application.CreateNewTariffCommand;
+import bruchalex.remna_shop.tariff.application.port.in.web.CreateNewTariffUseCase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class Tariff {
     private Instant updatedAt;
 
     public static Tariff create(String name, Integer trafficLimitGb, Integer devicesLimit, Integer priceRubles, Integer durationDays) {
-        var now =  Instant.now();
+        var now = Instant.now();
         return new Tariff(
                 UUID.randomUUID(),
                 name,
@@ -48,12 +48,12 @@ public class Tariff {
         );
     }
 
-    public static Tariff fromCommand(CreateNewTariffCommand command) {
+    public static Tariff of(CreateNewTariffUseCase.Command command) {
 
         return Tariff.create(
                 command.name(),
                 command.trafficLimitGb(),
-                command.devicesLimit(),
+                command.deviceLimit(),
                 command.priceRubles(),
                 command.durationDays()
         );
@@ -68,7 +68,7 @@ public class Tariff {
     }
 
     public void setNewPrice(Integer newPriceRubles) {
-        if (newPriceRubles <= 0){
+        if (newPriceRubles <= 0) {
             throw new IllegalArgumentException();
         }
         this.priceRubles = newPriceRubles;

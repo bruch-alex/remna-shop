@@ -1,4 +1,4 @@
-package bruchalex.remna_shop.tariff.application;
+package bruchalex.remna_shop.tariff.application.port.in.web;
 
 import java.time.Instant;
 import java.util.UUID;

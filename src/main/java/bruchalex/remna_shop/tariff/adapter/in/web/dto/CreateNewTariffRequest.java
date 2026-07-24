@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Positive;
 public record CreateNewTariffRequest(
         @NotBlank String name,
         @NotNull @Positive Integer trafficLimitGb,
-        @NotNull @Positive Integer devicesLimit,
+        @NotNull @Positive Integer deviceLimit,
         @NotNull @Positive Integer durationDays,
         @NotNull @Positive Integer priceRubles
 ) {
