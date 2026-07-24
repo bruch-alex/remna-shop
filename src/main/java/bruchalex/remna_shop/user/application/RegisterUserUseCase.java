@@ -1,7 +1,7 @@
 package bruchalex.remna_shop.user.application;
 
-import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserResponse;
+import bruchalex.remna_shop.user.adapter.in.web.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.adapter.in.web.dto.RegisterUserResponse;
 import bruchalex.remna_shop.user.domain.*;
 import bruchalex.remna_shop.user.domain.exception.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +22,10 @@ public class RegisterUserUseCase {
             throw new UserAlreadyExistsException(email);
         }
 
-        var hashedPassword = new HashedPassword(passwordEncoder.encode(request.password()));
-        var newUser = MyUser.create(
-                email,
-                hashedPassword,
-                UserRole.USER
+        var hashedPassword = new HashedPassword(
+            passwordEncoder.encode(request.password())
         );
+        var newUser = MyUser.create(email, hashedPassword, UserRole.USER);
 
         var saved = userRepository.save(newUser);
         return RegisterUserResponse.from(saved);

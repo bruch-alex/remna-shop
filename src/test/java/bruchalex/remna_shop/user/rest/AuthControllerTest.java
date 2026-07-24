@@ -1,8 +1,10 @@
 package bruchalex.remna_shop.user.rest;
 
+import bruchalex.remna_shop.user.adapter.in.web.AuthController;
+import bruchalex.remna_shop.user.adapter.in.web.dto.RegisterUserRequest;
 import bruchalex.remna_shop.user.application.LoginUserUseCase;
 import bruchalex.remna_shop.user.application.RegisterUserUseCase;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;

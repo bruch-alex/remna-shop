@@ -40,7 +40,7 @@ com.bruchalex.remna_shop
 │
 ├── shared/
 │   └── security/
-│   └── auth/ 
+│   └── auth/
 │
 ├── user/
 │   ├── package-info.java
@@ -63,4 +63,11 @@ com.bruchalex.remna_shop
 │           └── UserDetailsAdapter.java
 │
 ├── vpn/
+    adapter/
+      in/
+        web/
+      out/
+    application/
+    domain/
+    infra/
 ```

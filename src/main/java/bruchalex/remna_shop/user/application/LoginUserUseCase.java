@@ -1,11 +1,11 @@
 package bruchalex.remna_shop.user.application;
 
 import bruchalex.remna_shop.shared.auth.TokenGenerator;
+import bruchalex.remna_shop.user.adapter.in.web.dto.LoginUserRequest;
+import bruchalex.remna_shop.user.adapter.in.web.dto.LoginUserResponse;
 import bruchalex.remna_shop.user.domain.Email;
 import bruchalex.remna_shop.user.domain.UserRepository;
 import bruchalex.remna_shop.user.domain.exception.InvalidCredentialsException;
-import bruchalex.remna_shop.user.rest.dto.LoginUserRequest;
-import bruchalex.remna_shop.user.rest.dto.LoginUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class LoginUserUseCase {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenGenerator tokenGenerator;
@@ -23,10 +24,13 @@ public class LoginUserUseCase {
         var candidate = userRepository.findByEmail(email);
 
         var hashToVerify = candidate
-                .map(u -> u.getHashedPassword().value())
-                .orElse(null);
+            .map(u -> u.getHashedPassword().value())
+            .orElse(null);
 
-        boolean passwordMatches = passwordEncoder.matches(request.password(), hashToVerify);
+        boolean passwordMatches = passwordEncoder.matches(
+            request.password(),
+            hashToVerify
+        );
 
         if (candidate.isEmpty() || !passwordMatches) {
             throw new InvalidCredentialsException();
@@ -34,7 +38,10 @@ public class LoginUserUseCase {
 
         var user = candidate.get();
         var token = tokenGenerator.generate(
-                user.getUuid().value(), user.getEmail().value(), user.getRole().getValue());
+            user.getUuid().value(),
+            user.getEmail().value(),
+            user.getRole().getValue()
+        );
 
         return new LoginUserResponse(token);
     }
