@@ -1,17 +1,19 @@
 package bruchalex.remna_shop.user.adapter.in.web.dto;
 
+import bruchalex.remna_shop.user.application.port.in.web.LoginUserUseCase;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record LoginUserRequest(
-    @NotBlank @Email String email,
+        @NotBlank
+        @Email
+        String email,
 
-    @NotBlank
-    @Size(
-        min = 15,
-        max = 128,
-        message = "Password must be between 15 and 128 chars"
-    )
-    String password
-) {}
+        @NotBlank
+        @Size(min = 15, max = 128, message = "Password must be between 15 and 128 chars")
+        String password) {
+    public LoginUserUseCase.Command toCommand() {
+        return new LoginUserUseCase.Command(this.email(), this.password());
+    }
+}

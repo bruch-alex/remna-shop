@@ -1,13 +1,11 @@
 package bruchalex.remna_shop.user.adapter.in.web.dto;
 
-import bruchalex.remna_shop.user.domain.MyUser;
+import bruchalex.remna_shop.user.application.port.in.web.RegisterUserUseCase;
+
 import java.time.Instant;
 
 public record RegisterUserResponse(String email, Instant createdAt) {
-    public static RegisterUserResponse from(MyUser user) {
-        return new RegisterUserResponse(
-            user.getEmail().value(),
-            user.getCreatedAt()
-        );
+    public static RegisterUserResponse of(RegisterUserUseCase.Result result) {
+        return new RegisterUserResponse(result.email(), result.createdAt());
     }
 }

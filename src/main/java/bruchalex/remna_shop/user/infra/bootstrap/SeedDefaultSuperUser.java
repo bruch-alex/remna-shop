@@ -1,6 +1,7 @@
 package bruchalex.remna_shop.user.infra.bootstrap;
 
 import bruchalex.remna_shop.user.adapter.in.web.UserExceptionHandler;
+import bruchalex.remna_shop.user.application.port.out.persistence.UserRepository;
 import bruchalex.remna_shop.user.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

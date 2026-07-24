@@ -1,8 +1,8 @@
 package bruchalex.remna_shop.user.adapter.out;
 
+import bruchalex.remna_shop.user.application.port.out.persistence.UserRepository;
 import bruchalex.remna_shop.user.domain.Email;
 import bruchalex.remna_shop.user.domain.MyUser;
-import bruchalex.remna_shop.user.domain.UserRepository;
 import bruchalex.remna_shop.user.domain.UserRole;
 import java.util.Collection;
 import java.util.List;
