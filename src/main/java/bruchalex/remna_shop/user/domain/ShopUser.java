@@ -11,7 +11,8 @@ import java.time.Instant;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MyUser {
+@Table(name = "users", schema = "user_module")
+public class ShopUser {
 
     @EmbeddedId
     @AttributeOverride(name = "value", column = @Column(name = "uuid"))
@@ -33,8 +34,8 @@ public class MyUser {
 
     private Instant updatedAt;
 
-    public static MyUser create(Email email, HashedPassword hashedPassword, UserRole role) {
+    public static ShopUser create(Email email, HashedPassword hashedPassword, UserRole role) {
         var now = Instant.now();
-        return new MyUser(new UserId(), email, hashedPassword, role, now, now);
+        return new ShopUser(new UserId(), email, hashedPassword, role, now, now);
     }
 }

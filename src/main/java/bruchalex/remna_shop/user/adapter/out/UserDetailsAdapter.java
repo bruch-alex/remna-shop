@@ -2,7 +2,7 @@ package bruchalex.remna_shop.user.adapter.out;
 
 import bruchalex.remna_shop.user.application.port.out.persistence.UserRepository;
 import bruchalex.remna_shop.user.domain.Email;
-import bruchalex.remna_shop.user.domain.MyUser;
+import bruchalex.remna_shop.user.domain.ShopUser;
 import bruchalex.remna_shop.user.domain.UserRole;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +26,7 @@ public class UserDetailsAdapter implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email)
         throws UsernameNotFoundException {
-        MyUser domainUser = userRepository
+        ShopUser domainUser = userRepository
             .findByEmail(new Email(email))
             .orElseThrow(() ->
                 new UsernameNotFoundException("User not found: " + email)

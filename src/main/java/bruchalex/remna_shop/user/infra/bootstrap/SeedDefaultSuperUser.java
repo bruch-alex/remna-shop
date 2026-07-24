@@ -26,7 +26,7 @@ public class SeedDefaultSuperUser implements CommandLineRunner {
         if (userRepository.existsByEmail(email)) {
             return;
         }
-        var defaultAdmin = MyUser.create(
+        var defaultAdmin = ShopUser.create(
                 new Email(superUserProperties.email()),
                 new HashedPassword(passwordEncoder.encode(superUserProperties.password())),
                 UserRole.ADMIN
