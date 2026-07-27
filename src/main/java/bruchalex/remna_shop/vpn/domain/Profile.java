@@ -1,8 +1,6 @@
 package bruchalex.remna_shop.vpn.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,12 +15,13 @@ import java.util.UUID;
 @Builder
 @Getter
 @Entity
-@Table(name = "profiles", schema = "vpn_module")
+@Table(name = "profile", schema = "vpn_module")
 public class Profile {
 
     @Id
-    private UUID uuid;
-    private UUID userUuid;
+    private UUID id;
+
+    private UUID userId;
 
     private Integer deviceLimit;
     private Integer trafficLimitGb;
@@ -33,5 +32,7 @@ public class Profile {
 
     private String telegramId;
     private String label;
-    private List<Device> devices;
+
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProfileDeviceLinkTable> deviceLinks;
 }

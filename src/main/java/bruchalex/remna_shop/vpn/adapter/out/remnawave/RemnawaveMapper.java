@@ -9,14 +9,14 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface RemnawaveMapper {
-    @Mapping(target = "uuid", source = "username")
+    @Mapping(target = "id", source = "username")
     @Mapping(target = "deviceLimit", source = "hwidDeviceLimit")
     @Mapping(target = "label", source = "description")
     @Mapping(target = "expiresAt", source = "expireAt")
     @Mapping(
-        target = "trafficLimitGb",
-        source = "trafficLimitBytes",
-        qualifiedByName = "bytesToGb"
+            target = "trafficLimitGb",
+            source = "trafficLimitBytes",
+            qualifiedByName = "bytesToGb"
     )
     Profile toVpnProfile(UserResponse response);
 
