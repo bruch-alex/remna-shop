@@ -1,8 +1,10 @@
 package bruchalex.remna_shop.user.rest;
 
-import bruchalex.remna_shop.user.application.LoginUserUseCase;
-import bruchalex.remna_shop.user.application.RegisterUserUseCase;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.adapter.in.web.AuthController;
+import bruchalex.remna_shop.user.adapter.in.web.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.application.LoginUserService;
+import bruchalex.remna_shop.user.application.RegisterUserService;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -25,8 +27,8 @@ public class AuthControllerTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    @MockitoBean private RegisterUserUseCase useCase;
-    @MockitoBean private LoginUserUseCase loginUseCase;
+    @MockitoBean private RegisterUserService useCase;
+    @MockitoBean private LoginUserService loginUseCase;
 
     @Test
     void register_returns400_whenEmailInvalid() throws Exception {

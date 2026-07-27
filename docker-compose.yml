@@ -19,7 +19,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - TZ=UTC
     ports:
-      - 127.0.0.1:6543:5432
+      - "127.0.0.1:6543:5432"
     volumes:
       - remnashop-db-data:/var/lib/postgresql
     healthcheck:
@@ -38,6 +38,11 @@ services:
     depends_on:
       remnashop-db:
         condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: src
+
 
 volumes:
   remnashop-db-data:

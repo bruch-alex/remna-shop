@@ -1,8 +1,8 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
-import bruchalex.remna_shop.vpn.adapter.out.remnawave.client.RemnawaveSystemClient;
-import bruchalex.remna_shop.vpn.adapter.out.remnawave.exception.RemnawaveApiException;
 import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
+import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveSystemClient;
+import bruchalex.remna_shop.vpn.infra.remnawave.exception.RemnawaveApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,22 @@ public class ConnectivityAdapter implements VpnConnectivityPort {
     @Override
     public boolean isAuthenticated() {
         try {
-            var info = remnawaveSystemClient.getRemnawaveInformation().response();
-            log.debug("Connected to Remnawave Backend version: {}", info.version());
+            var info = remnawaveSystemClient
+                .getRemnawaveInformation()
+                .response();
+            log.debug(
+                "Connected to Remnawave Backend version: {}",
+                info.version()
+            );
             return true;
         } catch (ResourceAccessException _) {
             log.debug("Remnawave is unreachable. Network error");
             return false;
         } catch (RemnawaveApiException e) {
-            log.debug("Not authenticated with Remnawave: status={}", e.getStatus());
+            log.debug(
+                "Not authenticated with Remnawave: status={}",
+                e.getStatus()
+            );
             return false;
         }
     }

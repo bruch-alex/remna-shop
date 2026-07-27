@@ -1,7 +1,8 @@
 package bruchalex.remna_shop.user.infra.bootstrap;
 
+import bruchalex.remna_shop.user.adapter.in.web.UserExceptionHandler;
+import bruchalex.remna_shop.user.application.port.out.persistence.UserRepository;
 import bruchalex.remna_shop.user.domain.*;
-import bruchalex.remna_shop.user.rest.UserExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,7 +26,7 @@ public class SeedDefaultSuperUser implements CommandLineRunner {
         if (userRepository.existsByEmail(email)) {
             return;
         }
-        var defaultAdmin = MyUser.create(
+        var defaultAdmin = ShopUser.create(
                 new Email(superUserProperties.email()),
                 new HashedPassword(passwordEncoder.encode(superUserProperties.password())),
                 UserRole.ADMIN

@@ -1,9 +1,11 @@
 package bruchalex.remna_shop.user.application;
 
+import bruchalex.remna_shop.user.adapter.in.web.dto.RegisterUserRequest;
+import bruchalex.remna_shop.user.application.port.in.web.RegisterUserUseCase;
 import bruchalex.remna_shop.user.domain.Email;
-import bruchalex.remna_shop.user.domain.UserRepository;
+import bruchalex.remna_shop.user.application.port.out.persistence.UserRepository;
 import bruchalex.remna_shop.user.domain.exception.UserAlreadyExistsException;
-import bruchalex.remna_shop.user.rest.dto.RegisterUserRequest;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,12 +18,12 @@ public class RegisterUserUseCaseTest {
     private final UserRepository userRepository = mock(UserRepository.class);
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
 
-    private final RegisterUserUseCase useCase =
-            new RegisterUserUseCase(userRepository, passwordEncoder);
+    private final RegisterUserService useCase =
+            new RegisterUserService(userRepository, passwordEncoder);
 
     @Test
     void cannotRegister_whenEmailExists() {
-        var command = new RegisterUserRequest("existing@example.com", "password123", "password123");
+        var command = new RegisterUserUseCase.Command("existing@example.com", "password123");
 
         // given: a user with this email already exists
         when(userRepository.existsByEmail(new Email("existing@example.com")))

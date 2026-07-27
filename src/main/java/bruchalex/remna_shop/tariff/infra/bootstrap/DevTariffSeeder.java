@@ -1,11 +1,10 @@
 package bruchalex.remna_shop.tariff.infra.bootstrap;
 
 
-import bruchalex.remna_shop.tariff.application.CreateNewTariffCommand;
-import bruchalex.remna_shop.tariff.application.CreateNewTariffUseCase;
-import bruchalex.remna_shop.tariff.application.GetAllTariffsUseCase;
-import bruchalex.remna_shop.tariff.application.SetNewTrialTariffUseCase;
-import bruchalex.remna_shop.tariff.domain.TariffRepositoryPort;
+import bruchalex.remna_shop.tariff.application.port.in.web.CreateNewTariffUseCase;
+import bruchalex.remna_shop.tariff.application.port.in.web.GetAllTariffsUseCase;
+import bruchalex.remna_shop.tariff.application.port.in.web.SetNewTrialTariffUseCase;
+import bruchalex.remna_shop.tariff.application.port.out.persistence.TariffRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -23,11 +22,11 @@ public class DevTariffSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if (!tariffRepo.findAll().isEmpty()){
+        if (!tariffRepo.findAll().isEmpty()) {
             return;
         }
 
-        var command = new CreateNewTariffCommand(
+        var command = new CreateNewTariffUseCase.Command(
                 "Test Tariff",
                 100,
                 10,
@@ -35,7 +34,7 @@ public class DevTariffSeeder implements CommandLineRunner {
                 500
         );
 
-        var commandTrial = new CreateNewTariffCommand(
+        var commandTrial = new CreateNewTariffUseCase.Command(
                 "Trial Tariff",
                 69,
                 3,
