@@ -1,11 +1,10 @@
 package bruchalex.remna_shop.vpn.infra.remnawave;
 
+import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveHwidUserDevicesController;
 import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveSystemClient;
-import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveUserClient;
-import bruchalex.remna_shop.vpn.infra.remnawave.exception.RemnawaveApiException;
-import bruchalex.remna_shop.vpn.infra.remnawave.exception.RemnawaveErrorResponse;
-import java.nio.charset.StandardCharsets;
+import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveUsersController;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,49 +17,48 @@ import tools.jackson.databind.ObjectMapper;
 @Configuration
 @EnableConfigurationProperties(RemnawaveProperties.class)
 @RequiredArgsConstructor
+@Slf4j
 public class RemnawaveHttpConfig {
 
     private final ObjectMapper objectMapper;
+    private final RemnawaveErrorHandler errorHandler;
 
     @Bean
     RestClient restClient(RemnawaveProperties properties) {
         return RestClient.builder()
-            .baseUrl(properties.baseUrl())
-            .defaultHeader("Authorization", "Bearer " + properties.apiKey())
-            .defaultStatusHandler(HttpStatusCode::isError, (_, res) -> {
-                var raw = new String(
-                    res.getBody().readAllBytes(),
-                    StandardCharsets.UTF_8
-                );
-                var error = objectMapper.readValue(
-                    raw,
-                    RemnawaveErrorResponse.class
-                );
-                throw new RemnawaveApiException(error);
-            })
-            .build();
+                .baseUrl(properties.baseUrl())
+                .defaultHeader("Authorization", "Bearer " + properties.apiKey())
+                .defaultStatusHandler(HttpStatusCode::isError, errorHandler::handle)
+                .build();
     }
 
     @Bean
     public HttpServiceProxyFactory remnawaveProxyFactory(
-        RestClient remnawaveRestClient
+            RestClient remnawaveRestClient
     ) {
         return HttpServiceProxyFactory.builderFor(
-            RestClientAdapter.create(remnawaveRestClient)
+                RestClientAdapter.create(remnawaveRestClient)
         ).build();
     }
 
     @Bean
-    public RemnawaveUserClient remnawaveUserClient(
-        HttpServiceProxyFactory factory
+    public RemnawaveUsersController remnawaveUserClient(
+            HttpServiceProxyFactory factory
     ) {
-        return factory.createClient(RemnawaveUserClient.class);
+        return factory.createClient(RemnawaveUsersController.class);
     }
 
     @Bean
     public RemnawaveSystemClient remnawaveSystemClient(
-        HttpServiceProxyFactory factory
+            HttpServiceProxyFactory factory
     ) {
         return factory.createClient(RemnawaveSystemClient.class);
+    }
+
+    @Bean
+    public RemnawaveHwidUserDevicesController remnawaveHwidUserDevicesController(
+            HttpServiceProxyFactory factory
+    ) {
+        return factory.createClient(RemnawaveHwidUserDevicesController.class);
     }
 }

@@ -1,7 +1,14 @@
 package bruchalex.remna_shop.vpn.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "profile_device", schema = "vpn_module")
 public class ProfileDeviceLinkTable {
@@ -13,7 +20,7 @@ public class ProfileDeviceLinkTable {
     @JoinColumn(name = "profile_id")
     Profile profile;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @MapsId("deviceId")
     @JoinColumn(name = "device_id")
     Device device;

@@ -17,5 +17,5 @@ public class ProfileDeviceKey {
     private UUID profileId;
 
     @Column(name = "device_id")
-    private Long deviceId;
+    private String deviceId;
 }

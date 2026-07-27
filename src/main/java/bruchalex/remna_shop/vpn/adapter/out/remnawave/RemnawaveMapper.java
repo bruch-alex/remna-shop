@@ -1,6 +1,8 @@
 package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 
+import bruchalex.remna_shop.vpn.domain.Device;
 import bruchalex.remna_shop.vpn.domain.Profile;
+import bruchalex.remna_shop.vpn.infra.remnawave.dto.DeviceResponse;
 import bruchalex.remna_shop.vpn.infra.remnawave.dto.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -24,4 +26,11 @@ public interface RemnawaveMapper {
     default Integer bytesToGb(Long bytes) {
         return bytes == null ? null : (int) (bytes / (1024L * 1024L * 1024L));
     }
+
+    @Mapping(target = "id", source = "hwid")
+    @Mapping(target = "model", source = "deviceModel")
+    @Mapping(target = "os", source = "platform")
+    @Mapping(target = "userAgent", source = "userAgent")
+    Device toDevice(DeviceResponse response);
+
 }
