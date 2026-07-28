@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface GetProfileSummaryUseCase {
 
-    ProfileResult execute(UUID profileId);
+    ProfileResult execute(UUID profileId, UUID authUserUuid);
 
     record DeviceResult(
             String label,

@@ -4,9 +4,11 @@ import bruchalex.remna_shop.vpn.adapter.out.remnawave.ProfileManagementAdapter;
 import bruchalex.remna_shop.vpn.application.port.in.GetProfileSummaryUseCase;
 import bruchalex.remna_shop.vpn.application.port.out.persistence.ProfileRepository;
 import bruchalex.remna_shop.vpn.domain.Device;
+import bruchalex.remna_shop.vpn.domain.exception.VpnProfileNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -25,19 +27,23 @@ public class GetProfileSummaryService implements GetProfileSummaryUseCase {
 
     @Override
     @Transactional
-    public ProfileResult execute(UUID profileId) {
+    public ProfileResult execute(UUID profileId, UUID authUserUuid) {
         log.debug("Getting profile summary for profile {}", profileId);
-        var profile = profileRepository.findById(profileId)
-                .orElse(userManagementAdapter.getProfileById(profileId));
+        var profileInDB = profileRepository.findById(profileId)
+                .orElseThrow(VpnProfileNotFoundException::new);
+
+        if (!profileInDB.getUserId().equals(authUserUuid)) {
+            throw new AccessDeniedException("Access denied");
+        }
 
         var remoteProfile = userManagementAdapter.getProfileById(profileId);
         Map<String, Device> remoteDevicesByHwid = userManagementAdapter
                 .getDevicesByProfileId(profileId).stream()
                 .collect(Collectors.toMap(Device::getId, Function.identity()));
 
-        profile.merge(remoteProfile);
-        profile.syncDevices(remoteDevicesByHwid);
-        var savedProfile = profileRepository.save(profile);
+        profileInDB.merge(remoteProfile);
+        profileInDB.syncDevices(remoteDevicesByHwid);
+        var savedProfile = profileRepository.save(profileInDB);
 
         return profileMapper.toResult(savedProfile, remoteDevicesByHwid);
     }

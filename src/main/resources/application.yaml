@@ -18,7 +18,7 @@ spring:
 remnashop:
   jwt:
     secret: ${JWT_SECRET}
-    expiration: PT1H
+    expiration: ${JWT_DURATION}
   superuser:
     username: ${SUPERUSER_USERNAME}
     password: ${SUPERUSER_PASSWORD}

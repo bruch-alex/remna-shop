@@ -1,10 +1,12 @@
 package bruchalex.remna_shop.vpn.adapter.in.web;
 
+import bruchalex.remna_shop.shared.auth.AuthUser;
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
 import bruchalex.remna_shop.vpn.application.port.in.GetProfileSummaryUseCase;
 import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +31,10 @@ public class VpnController {
     }
 
     @GetMapping("/{profileId}")
-    public ResponseEntity<ProfileResponse> getProfile(@PathVariable("profileId") UUID profileId) {
-        var result = getProfileSummaryUseCase.execute(profileId);
+    public ResponseEntity<ProfileResponse> getProfile(
+            @PathVariable("profileId") UUID profileId,
+            @AuthenticationPrincipal AuthUser authUser) {
+        var result = getProfileSummaryUseCase.execute(profileId, UUID.fromString(authUser.userUuid()));
         var response = mapper.toResponse(result);
         return ResponseEntity.ok(response);
     }
