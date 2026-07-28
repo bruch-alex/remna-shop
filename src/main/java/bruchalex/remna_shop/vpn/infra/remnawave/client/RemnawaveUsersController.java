@@ -28,4 +28,9 @@ public interface RemnawaveUsersController {
     RemnawaveResponse<UserResponse> getUserByUsername(
             @PathVariable("username") String username
     ) throws RemnawaveApiException;
+
+    @GetExchange("/by-email/{email}")
+    RemnawaveResponse<List<UserResponse>> getUsersByEmail(
+            @PathVariable("email") String email
+    ) throws RemnawaveApiException;
 }

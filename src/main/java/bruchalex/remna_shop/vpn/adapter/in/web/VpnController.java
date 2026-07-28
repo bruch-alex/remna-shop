@@ -7,11 +7,9 @@ import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,6 +34,15 @@ public class VpnController {
             @AuthenticationPrincipal AuthUser authUser) {
         var result = getProfileSummaryUseCase.execute(profileId, UUID.fromString(authUser.userUuid()));
         var response = mapper.toResponse(result);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/sync")
+    public ResponseEntity<List<ProfileResponse>> syncProfile(@AuthenticationPrincipal AuthUser authUser) {
+        var result = getProfileSummaryUseCase.syncRemoteProfiles(authUser.userEmail(), UUID.fromString(authUser.userUuid()));
+        var response = result.stream()
+                .map(mapper::toResponse)
+                .toList();
         return ResponseEntity.ok(response);
     }
 }

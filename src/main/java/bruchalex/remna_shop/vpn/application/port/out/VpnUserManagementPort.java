@@ -9,9 +9,11 @@ import java.util.UUID;
 public interface VpnUserManagementPort {
     Profile create(Profile profile);
 
-    List<Profile> getProfilesByTelegramId(String telegramId);
-
     Profile getProfileById(UUID profileId);
+
+    List<Profile> getProfilesByEmail(String email);
+
+    List<Profile> getProfilesByTelegramId(String telegramId);
 
     List<Device> getDevicesByProfileId(UUID profileId);
 }

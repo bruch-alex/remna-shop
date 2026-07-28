@@ -8,6 +8,8 @@ public interface GetProfileSummaryUseCase {
 
     ProfileResult execute(UUID profileId, UUID authUserUuid);
 
+    List<ProfileResult> syncRemoteProfiles(String email, UUID authUserUuid);
+
     record DeviceResult(
             String label,
             String hwid,

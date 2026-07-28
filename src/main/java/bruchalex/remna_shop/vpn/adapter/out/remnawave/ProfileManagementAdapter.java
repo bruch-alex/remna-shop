@@ -70,6 +70,22 @@ public class ProfileManagementAdapter implements VpnUserManagementPort {
     }
 
     @Override
+    public List<Profile> getProfilesByEmail(String email) {
+        try {
+            return remnawaveUsersController
+                    .getUsersByEmail(email)
+                    .response()
+                    .stream()
+                    .map(remnawaveMapper::toVpnProfile)
+                    .toList();
+        } catch (RemnawaveClientException e) {
+            throw new RuntimeException("Invalid request to Remnawave", e);
+        } catch (RemnawaveServerException | ResourceAccessException e) {
+            throw new RuntimeException("Remnawave is unavailable", e);
+        }
+    }
+
+    @Override
     public List<Device> getDevicesByProfileId(UUID profileId) {
         try {
             var profileResponse = remnawaveUsersController

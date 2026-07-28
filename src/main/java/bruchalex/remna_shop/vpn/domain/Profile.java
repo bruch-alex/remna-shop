@@ -21,6 +21,7 @@ public class Profile {
     private UUID userId;
 
     private String telegramId;
+    private String email;
     private String label;
 
     private Integer deviceLimit;
@@ -45,6 +46,7 @@ public class Profile {
         this.updatedAt = profile.updatedAt;
         this.expiresAt = profile.expiresAt;
         this.telegramId = profile.telegramId;
+        this.email = profile.email;
         this.fetchedAt = Instant.now();
     }
 
@@ -78,5 +80,12 @@ public class Profile {
             }
         }
         throw new RuntimeException("No such device with id " + hwid);
+    }
+
+    public void setNewUserId(UUID newUserId) {
+        if (this.userId != null) {
+            throw new IllegalStateException("User already set");
+        }
+        this.userId = newUserId;
     }
 }
