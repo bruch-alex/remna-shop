@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.Instant;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -19,24 +18,24 @@ public class Profile {
 
     @Id
     private UUID id;
-
     private UUID userId;
-
-    private Integer deviceLimit;
-    private Integer trafficLimitGb;
-    private String subscriptionUrl;
-    private Instant createdAt;
-    private Instant updatedAt;
-    private Instant expiresAt;
 
     private String telegramId;
     private String label;
 
+    private Integer deviceLimit;
+    private Integer trafficLimitGb;
+    private String subscriptionUrl;
+    private Instant expiresAt;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+    private Instant fetchedAt;
+
     @Builder.Default
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProfileDeviceLinkTable> deviceLabels = new ArrayList<>();
+    private List<DeviceLabel> deviceLabels = new ArrayList<>();
 
-    private Instant fetchedAt;
 
     public void merge(Profile profile) {
         this.deviceLimit = profile.deviceLimit;
@@ -46,32 +45,38 @@ public class Profile {
         this.updatedAt = profile.updatedAt;
         this.expiresAt = profile.expiresAt;
         this.telegramId = profile.telegramId;
-        this.label = profile.label;
         this.fetchedAt = Instant.now();
     }
 
-    public void merge(List<Device> devices) {
-        Map<String, Device> incomingByHwid = devices.stream()
-                .collect(Collectors.toMap(Device::getId, Function.identity()));
+    public void syncDevices(Map<String, Device> devicesByHwid) {
+        // 1. Remove labels whose device no longer exists in the incoming list
+        deviceLabels.removeIf(link -> !devicesByHwid.containsKey(link.getDeviceId()));
 
-        // 1. Remove links whose device no longer exists in the incoming list
-        deviceLabels.removeIf(link -> !incomingByHwid.containsKey(link.device.getId()));
-
-        // 2. Track which hwids already have a link, so we know what's new
+        // 2. Track which hwids already have a label
         Set<String> existingHwids = deviceLabels.stream()
-                .map(link -> link.device.getId())
+                .map(DeviceLabel::getDeviceId)
                 .collect(Collectors.toSet());
 
-        // 3. Add links for devices that aren't linked yet
-        devices.stream()
-                .filter(device -> !existingHwids.contains(device.getId()))
+        // 3. Add labels for devices that aren't linked yet
+        devicesByHwid.entrySet().stream()
+                .filter(device -> !existingHwids.contains(device.getKey()))
                 .forEach(device -> {
-                    var newLink = ProfileDeviceLinkTable.builder()
+                    var newLink = DeviceLabel.builder()
+                            .profileDeviceKey(new ProfileDeviceKey(this.id, device.getKey()))
                             .profile(this)
-                            .device(device)
                             .label("New Device")
                             .build();
                     this.deviceLabels.add(newLink);
                 });
+    }
+
+    public DeviceLabel renameDevice(String hwid, String newLabel) {
+        for (DeviceLabel deviceLabel : this.deviceLabels) {
+            if (deviceLabel.getDeviceId().equals(hwid)) {
+                deviceLabel.label = newLabel;
+                return deviceLabel;
+            }
+        }
+        throw new RuntimeException("No such device with id " + hwid);
     }
 }

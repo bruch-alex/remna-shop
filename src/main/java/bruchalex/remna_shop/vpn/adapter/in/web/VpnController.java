@@ -1,7 +1,6 @@
 package bruchalex.remna_shop.vpn.adapter.in.web;
 
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
-import bruchalex.remna_shop.vpn.application.ProfileMapper;
 import bruchalex.remna_shop.vpn.application.port.in.GetProfileSummaryUseCase;
 import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class VpnController {
     private final VpnConnectivityPort vpnConnectivityPort;
     private final GetProfileSummaryUseCase getProfileSummaryUseCase;
 
-    private final ProfileMapper profileMapper;
+    private final RestMapper mapper;
 
     @GetMapping("/check-auth")
     public ResponseEntity<Boolean> isAuthenticated() {
@@ -32,8 +31,7 @@ public class VpnController {
     @GetMapping("/{profileId}")
     public ResponseEntity<ProfileResponse> getProfile(@PathVariable("profileId") UUID profileId) {
         var result = getProfileSummaryUseCase.execute(profileId);
-        var response = profileMapper.toResponse(result);
-        System.out.println("Profile response: " + response);
+        var response = mapper.toResponse(result);
         return ResponseEntity.ok(response);
     }
 }

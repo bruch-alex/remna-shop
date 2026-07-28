@@ -10,8 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "profile_device", schema = "vpn_module")
-public class ProfileDeviceLinkTable {
+@Table(name = "device_label", schema = "vpn_module")
+public class DeviceLabel {
     @EmbeddedId
     ProfileDeviceKey profileDeviceKey;
 
@@ -20,11 +20,10 @@ public class ProfileDeviceLinkTable {
     @JoinColumn(name = "profile_id")
     Profile profile;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @MapsId("deviceId")
-    @JoinColumn(name = "device_id")
-    Device device;
-
     @Column(name = "label")
     String label;
+
+    public String getDeviceId() {
+        return profileDeviceKey.getDeviceId();
+    }
 }

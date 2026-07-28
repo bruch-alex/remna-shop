@@ -1,11 +1,20 @@
 package bruchalex.remna_shop.vpn.adapter.in.web.dto;
 
+import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 public record ProfileResponse(
-        UUID id,
+        String id,
+        String userId,
+        String telegramId,
+        String label,
+        String subscriptionUrl,
+
+        Integer trafficLimitGb,
+        Instant expiresAt,
         Integer deviceLimit,
+
+        Integer addedDevices,
         List<DeviceResponse> devices
 
 ) {

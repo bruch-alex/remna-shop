@@ -13,7 +13,7 @@ import org.mapstruct.ReportingPolicy;
 public interface RemnawaveMapper {
     @Mapping(target = "id", source = "username")
     @Mapping(target = "deviceLimit", source = "hwidDeviceLimit")
-    @Mapping(target = "label", source = "description")
+    @Mapping(target = "label", ignore = true)
     @Mapping(target = "expiresAt", source = "expireAt")
     @Mapping(
             target = "trafficLimitGb",
