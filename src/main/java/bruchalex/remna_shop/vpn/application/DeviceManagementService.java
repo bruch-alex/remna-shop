@@ -3,13 +3,11 @@ package bruchalex.remna_shop.vpn.application;
 import bruchalex.remna_shop.vpn.application.port.in.DeviceManagementUseCase;
 import bruchalex.remna_shop.vpn.application.port.out.VpnUserManagementPort;
 import bruchalex.remna_shop.vpn.application.port.out.persistence.ProfileRepository;
+import bruchalex.remna_shop.vpn.domain.exception.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 
 @Service
@@ -21,24 +19,25 @@ public class DeviceManagementService implements DeviceManagementUseCase {
     private final VpnUserManagementPort vpnUserManagementPort;
 
     @Override
-    public Result setNewDeviceLabel(Command command) {
-        var profile = profileRepository.findById(command.userId()).orElseThrow();
+    @Transactional
+    public DeviceResult renameDevice(RenameDeviceCommand command) {
+        log.debug("Rename device command: {}", command);
+        var profile = profileRepository.findByIdAndUserId(command.profileId(), command.userId())
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
         var renamed = profile.renameDevice(command.hwid(), command.newLabel());
+        log.debug("Renamed device: {}", renamed);
         profileRepository.save(profile);
-        return new Result(renamed.getDeviceId(), renamed.getLabel());
+        return new DeviceResult(renamed.getDeviceId(), renamed.getLabel());
     }
 
     @Override
     @Transactional
-    public void removeDevice(UUID profileId, UUID authUserUuid, String deviceId) {
-        var profile = profileRepository.findById(profileId).orElseThrow();
+    public void removeDevice(RemoveDeviceCommand command) {
+        var profile = profileRepository.findByIdAndUserId(command.profileId(), command.userId())
+                .orElseThrow(() -> new ResourceNotFoundException("Device not found"));
 
-        if (!profile.getUserId().equals(authUserUuid)) {
-            throw new AccessDeniedException("You are not allowed to remove this device");
-        }
-
-        profile.removeDevice(deviceId);
-        vpnUserManagementPort.removeDevicesByExternalIdAndHwid(profile.getRemnawaveUserUuid(), deviceId);
+        profile.removeDevice(command.hwid());
+        vpnUserManagementPort.removeDevicesByExternalIdAndHwid(profile.getRemnawaveUserUuid(), command.hwid());
         profileRepository.save(profile);
     }
 }

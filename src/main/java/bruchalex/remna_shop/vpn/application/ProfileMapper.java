@@ -1,6 +1,6 @@
 package bruchalex.remna_shop.vpn.application;
 
-import bruchalex.remna_shop.vpn.application.port.in.GetProfileSummaryUseCase;
+import bruchalex.remna_shop.vpn.application.port.in.ProfileManagementUseCase;
 import bruchalex.remna_shop.vpn.domain.Device;
 import bruchalex.remna_shop.vpn.domain.DeviceLabel;
 import bruchalex.remna_shop.vpn.domain.Profile;
@@ -17,13 +17,13 @@ public interface ProfileMapper {
 
     @Mapping(target = "devices", expression = "java(mapDevices(profile.getDeviceLabels(), remoteDevicesByHwid))")
     @Mapping(target = "addedDevices", expression = "java(profile.getDeviceLabels().size())")
-    GetProfileSummaryUseCase.ProfileResult toResult(Profile profile, @Context Map<String, Device> remoteDevicesByHwid);
+    ProfileManagementUseCase.ProfileResult toResult(Profile profile, @Context Map<String, Device> remoteDevicesByHwid);
 
-    default List<GetProfileSummaryUseCase.DeviceResult> mapDevices(List<DeviceLabel> labels, Map<String, Device> remoteDevicesByHwid) {
+    default List<ProfileManagementUseCase.DeviceResult> mapDevices(List<DeviceLabel> labels, Map<String, Device> remoteDevicesByHwid) {
         return labels.stream()
                 .map(label -> {
                     var remoteDevice = remoteDevicesByHwid.get(label.getDeviceId());
-                    return new GetProfileSummaryUseCase.DeviceResult(
+                    return new ProfileManagementUseCase.DeviceResult(
                             label.getLabel(),
                             label.getDeviceId(),
                             remoteDevice.getOs(),

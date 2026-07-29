@@ -2,11 +2,13 @@ package bruchalex.remna_shop.vpn.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Builder
@@ -75,13 +77,14 @@ public class Profile {
     }
 
     public DeviceLabel renameDevice(String hwid, String newLabel) {
-        for (DeviceLabel deviceLabel : this.deviceLabels) {
+        for (var deviceLabel : deviceLabels) {
             if (deviceLabel.getDeviceId().equals(hwid)) {
                 deviceLabel.label = newLabel;
+                log.debug("Renaming device {} with id {} to {}", deviceLabel, hwid, newLabel);
                 return deviceLabel;
             }
         }
-        throw new RuntimeException("No such device with id " + hwid);
+        throw new RuntimeException("No such device with hwid: " + hwid);
     }
 
     public void setNewUserId(UUID newUserId) {

@@ -1,9 +1,11 @@
 package bruchalex.remna_shop.vpn.adapter.in.web;
 
 import bruchalex.remna_shop.shared.auth.AuthUser;
+import bruchalex.remna_shop.vpn.adapter.in.web.dto.DeviceResponse;
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
+import bruchalex.remna_shop.vpn.adapter.in.web.dto.RenameDeviceRequest;
 import bruchalex.remna_shop.vpn.application.port.in.DeviceManagementUseCase;
-import bruchalex.remna_shop.vpn.application.port.in.GetProfileSummaryUseCase;
+import bruchalex.remna_shop.vpn.application.port.in.ProfileManagementUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VpnController {
 
-    private final GetProfileSummaryUseCase getProfileSummaryUseCase;
+    private final ProfileManagementUseCase profileManagementUseCase;
     private final DeviceManagementUseCase deviceManagementUseCase;
 
     private final RestMapper mapper;
@@ -26,26 +28,55 @@ public class VpnController {
     public ResponseEntity<ProfileResponse> getProfile(
             @PathVariable("profileId") UUID profileId,
             @AuthenticationPrincipal AuthUser authUser) {
-        var result = getProfileSummaryUseCase.execute(profileId, UUID.fromString(authUser.userUuid()));
+        var command = new ProfileManagementUseCase.GetProfileSummaryCommand(
+                UUID.fromString(authUser.userUuid()),
+                profileId
+        );
+        var result = profileManagementUseCase.getProfileSummary(command);
         var response = mapper.toResponse(result);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/sync")
     public ResponseEntity<List<ProfileResponse>> syncProfile(@AuthenticationPrincipal AuthUser authUser) {
-        var result = getProfileSummaryUseCase.syncRemoteProfiles(authUser.userEmail(), UUID.fromString(authUser.userUuid()));
+        var command = new ProfileManagementUseCase.SyncProfileCommand(
+                UUID.fromString(authUser.userUuid()),
+                authUser.userEmail()
+        );
+        var result = profileManagementUseCase.syncRemoteProfiles(command);
         var response = result.stream()
                 .map(mapper::toResponse)
                 .toList();
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{profileId}/device/{deviceId}/remove")
+    @PostMapping("/{profileId}/device/{hwid}/remove")
     public ResponseEntity<String> removeDevice(
             @AuthenticationPrincipal AuthUser authUser,
-            @PathVariable("deviceId") String deviceId,
+            @PathVariable("hwid") String hwid,
             @PathVariable("profileId") UUID profileId) {
-        deviceManagementUseCase.removeDevice(profileId, UUID.fromString(authUser.userUuid()), deviceId);
+        var command = new DeviceManagementUseCase.RemoveDeviceCommand(
+                UUID.fromString(authUser.userUuid()),
+                profileId,
+                hwid
+        );
+        deviceManagementUseCase.removeDevice(command);
         return ResponseEntity.ok("Device removed");
+    }
+
+    @PostMapping("/{profileId}/device/{hwid}/rename")
+    public ResponseEntity<DeviceResponse> renameDevice(
+            @AuthenticationPrincipal AuthUser authUser,
+            @PathVariable("profileId") UUID profileId,
+            @PathVariable("hwid") String hwid,
+            @RequestBody RenameDeviceRequest request) {
+        var command = new DeviceManagementUseCase.RenameDeviceCommand(
+                UUID.fromString(authUser.userUuid()),
+                profileId,
+                hwid,
+                request.newName()
+        );
+        var result = deviceManagementUseCase.renameDevice(command);
+        return ResponseEntity.ok(mapper.toResponse(result));
     }
 }

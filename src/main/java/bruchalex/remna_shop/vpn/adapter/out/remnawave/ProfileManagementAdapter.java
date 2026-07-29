@@ -56,10 +56,10 @@ public class ProfileManagementAdapter implements VpnUserManagementPort {
     }
 
     @Override
-    public Profile getProfileById(UUID profileId) {
+    public Profile getProfileByUsername(String username) {
         try {
             var profileResponse = remnawaveUsersController
-                    .getUserByUsername(profileId.toString())
+                    .getUserByUsername(username)
                     .response();
             return remnawaveMapper.toVpnProfile(profileResponse);
         } catch (RemnawaveClientException e) {

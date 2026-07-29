@@ -4,11 +4,11 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-public interface GetProfileSummaryUseCase {
+public interface ProfileManagementUseCase {
 
-    ProfileResult execute(UUID profileId, UUID authUserUuid);
+    ProfileResult getProfileSummary(GetProfileSummaryCommand command);
 
-    List<ProfileResult> syncRemoteProfiles(String email, UUID authUserUuid);
+    List<ProfileResult> syncRemoteProfiles(SyncProfileCommand command);
 
     record DeviceResult(
             String label,
@@ -32,5 +32,11 @@ public interface GetProfileSummaryUseCase {
             Integer addedDevices,
             List<DeviceResult> devices
     ) {
+    }
+
+    record GetProfileSummaryCommand(UUID userId, UUID profileId) {
+    }
+
+    record SyncProfileCommand(UUID userId, String email) {
     }
 }

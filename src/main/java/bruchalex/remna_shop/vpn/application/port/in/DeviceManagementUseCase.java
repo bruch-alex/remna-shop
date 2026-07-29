@@ -4,13 +4,16 @@ import java.util.UUID;
 
 public interface DeviceManagementUseCase {
 
-    Result setNewDeviceLabel(Command command);
+    DeviceResult renameDevice(RenameDeviceCommand command);
 
-    void removeDevice(UUID profileId, UUID authUserUuid, String deviceId);
+    void removeDevice(RemoveDeviceCommand command);
 
-    record Result(String hwid, String label) {
+    record DeviceResult(String hwid, String label) {
     }
 
-    record Command(UUID userId, String hwid, String newLabel) {
+    record RenameDeviceCommand(UUID userId, UUID profileId, String hwid, String newLabel) {
+    }
+
+    record RemoveDeviceCommand(UUID userId, UUID profileId, String hwid) {
     }
 }

@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface VpnUserManagementPort {
     Profile create(Profile profile);
 
-    Profile getProfileById(UUID profileId);
+    Profile getProfileByUsername(String username);
 
     List<Profile> getProfilesByEmail(String email);
 

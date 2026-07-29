@@ -2,7 +2,7 @@ package bruchalex.remna_shop.vpn.adapter.in.web;
 
 import bruchalex.remna_shop.shared.exception.ErrorResponse;
 import bruchalex.remna_shop.vpn.domain.VpnProviderException;
-import bruchalex.remna_shop.vpn.domain.exception.VpnProfileNotFoundException;
+import bruchalex.remna_shop.vpn.domain.exception.ResourceNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -23,9 +23,9 @@ public class VpnExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage()));
     }
 
-    @ExceptionHandler(VpnProfileNotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleProfileNotFoundException(
-            VpnProfileNotFoundException ex
+            ResourceNotFoundException ex
     ) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
