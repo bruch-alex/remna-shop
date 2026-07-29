@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -31,6 +31,8 @@
         <io.jsonwebtoken.version>0.13.0</io.jsonwebtoken.version>
         <spring-modulith.version>2.1.0</spring-modulith.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <org.springdoc.openapi.version>3.0.3</org.springdoc.openapi.version>
+        <org.bouncycastle.bcprov-jdk18on.version>1.84</org.bouncycastle.bcprov-jdk18on.version>
     </properties>
     <dependencies>
         <dependency>
@@ -73,7 +75,7 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>
-            <version>1.84</version>
+            <version>${org.bouncycastle.bcprov-jdk18on.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -82,11 +84,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
@@ -94,7 +91,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.7.0</version>
+            <version>${org.springdoc.openapi.version}</version>
         </dependency>
 
         <dependency>
