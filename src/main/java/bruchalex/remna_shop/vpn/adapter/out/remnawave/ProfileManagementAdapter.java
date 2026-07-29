@@ -85,16 +85,13 @@ public class ProfileManagementAdapter implements VpnUserManagementPort {
         }
     }
 
+    /// @param externalId in case of remnawave `RemnawaveUserUuid` should be used
+    /// @return list of devices
     @Override
-    public List<Device> getDevicesByProfileId(UUID profileId) {
+    public List<Device> getDevicesByExternalId(UUID externalId) {
         try {
-            var profileResponse = remnawaveUsersController
-                    .getUserByUsername(profileId.toString())
-                    .response();
-            var profile = remnawaveMapper.toVpnProfile(profileResponse);
-
             return remnawaveHwidUserDevicesController
-                    .getUserHwidDevices(profileResponse.uuid())
+                    .getUserHwidDevices(externalId)
                     .response()
                     .devices()
                     .stream()
@@ -105,6 +102,25 @@ public class ProfileManagementAdapter implements VpnUserManagementPort {
         } catch (RemnawaveServerException | ResourceAccessException e) {
             throw new RuntimeException("Remnawave is unavailable", e);
         }
+    }
 
+    /// @param externalId in case of remnawave `RemnawaveUserUuid` should be used
+    /// @param hwid       hwid of device to delete
+    /// @return list of remaining devices after deletion
+    @Override
+    public List<Device> removeDevicesByExternalIdAndHwid(UUID externalId, String hwid) {
+        try {
+            return remnawaveHwidUserDevicesController
+                    .deleteUserHwidDevice(externalId, hwid)
+                    .response()
+                    .devices()
+                    .stream()
+                    .map(remnawaveMapper::toDevice)
+                    .toList();
+        } catch (RemnawaveClientException e) {
+            throw new RuntimeException("Invalid request to Remnawave", e);
+        } catch (RemnawaveServerException | ResourceAccessException e) {
+            throw new RuntimeException("Remnawave is unavailable", e);
+        }
     }
 }

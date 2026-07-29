@@ -33,6 +33,8 @@ public class Profile {
     private Instant updatedAt;
     private Instant fetchedAt;
 
+    private UUID remnawaveUserUuid;
+
     @Builder.Default
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeviceLabel> deviceLabels = new ArrayList<>();
@@ -87,5 +89,9 @@ public class Profile {
             throw new IllegalStateException("User already set");
         }
         this.userId = newUserId;
+    }
+
+    public void removeDevice(String hwid) {
+        this.deviceLabels.removeIf(l -> l.getDeviceId().equals(hwid));
     }
 }

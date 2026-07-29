@@ -20,6 +20,7 @@ public interface RemnawaveMapper {
             source = "trafficLimitBytes",
             qualifiedByName = "bytesToGb"
     )
+    @Mapping(target = "remnawaveUserUuid", source = "uuid")
     Profile toVpnProfile(UserResponse response);
 
     @Named("bytesToGb")

@@ -15,5 +15,7 @@ public interface VpnUserManagementPort {
 
     List<Profile> getProfilesByTelegramId(String telegramId);
 
-    List<Device> getDevicesByProfileId(UUID profileId);
+    List<Device> getDevicesByExternalId(UUID profileId);
+
+    List<Device> removeDevicesByExternalIdAndHwid(UUID profileId, String hwid);
 }

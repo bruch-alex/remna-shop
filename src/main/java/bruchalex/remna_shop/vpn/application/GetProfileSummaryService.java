@@ -41,7 +41,7 @@ public class GetProfileSummaryService implements GetProfileSummaryUseCase {
 
         var remoteProfile = userManagementAdapter.getProfileById(profileId);
         Map<String, Device> remoteDevicesByHwid = userManagementAdapter
-                .getDevicesByProfileId(profileId).stream()
+                .getDevicesByExternalId(remoteProfile.getRemnawaveUserUuid()).stream()
                 .collect(Collectors.toMap(Device::getId, Function.identity()));
 
         profileInDB.merge(remoteProfile);
@@ -59,7 +59,7 @@ public class GetProfileSummaryService implements GetProfileSummaryUseCase {
         remoteProfiles.forEach(p -> {
             p.setNewUserId(authUserUuid);
             Map<String, Device> remoteDevicesByHwid = userManagementAdapter
-                    .getDevicesByProfileId(p.getId())
+                    .getDevicesByExternalId(p.getRemnawaveUserUuid())
                     .stream()
                     .collect(Collectors.toMap(Device::getId, Function.identity()));
             p.syncDevices(remoteDevicesByHwid);

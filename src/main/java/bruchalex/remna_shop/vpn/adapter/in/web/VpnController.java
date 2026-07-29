@@ -2,8 +2,8 @@ package bruchalex.remna_shop.vpn.adapter.in.web;
 
 import bruchalex.remna_shop.shared.auth.AuthUser;
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
+import bruchalex.remna_shop.vpn.application.port.in.DeviceManagementUseCase;
 import bruchalex.remna_shop.vpn.application.port.in.GetProfileSummaryUseCase;
-import bruchalex.remna_shop.vpn.application.port.out.VpnConnectivityPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,20 +13,14 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/vpn")
+@RequestMapping("/vpn-profile")
 @RequiredArgsConstructor
 public class VpnController {
 
-    private final VpnConnectivityPort vpnConnectivityPort;
     private final GetProfileSummaryUseCase getProfileSummaryUseCase;
+    private final DeviceManagementUseCase deviceManagementUseCase;
 
     private final RestMapper mapper;
-
-    @GetMapping("/check-auth")
-    public ResponseEntity<Boolean> isAuthenticated() {
-        final var authenticated = vpnConnectivityPort.isAuthenticated();
-        return ResponseEntity.ok(authenticated);
-    }
 
     @GetMapping("/{profileId}")
     public ResponseEntity<ProfileResponse> getProfile(
@@ -44,5 +38,14 @@ public class VpnController {
                 .map(mapper::toResponse)
                 .toList();
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{profileId}/device/{deviceId}/remove")
+    public ResponseEntity<String> removeDevice(
+            @AuthenticationPrincipal AuthUser authUser,
+            @PathVariable("deviceId") String deviceId,
+            @PathVariable("profileId") UUID profileId) {
+        deviceManagementUseCase.removeDevice(profileId, UUID.fromString(authUser.userUuid()), deviceId);
+        return ResponseEntity.ok("Device removed");
     }
 }
