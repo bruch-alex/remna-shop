@@ -3,7 +3,7 @@ package bruchalex.remna_shop.vpn.adapter.out.remnawave;
 import bruchalex.remna_shop.vpn.application.port.out.VpnUserManagementPort;
 import bruchalex.remna_shop.vpn.domain.Device;
 import bruchalex.remna_shop.vpn.domain.Profile;
-import bruchalex.remna_shop.vpn.domain.VpnProviderException;
+import bruchalex.remna_shop.vpn.domain.exception.VpnProviderException;
 import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveHwidUserDevicesController;
 import bruchalex.remna_shop.vpn.infra.remnawave.client.RemnawaveUsersController;
 import bruchalex.remna_shop.vpn.infra.remnawave.dto.CreateUserRequest;

@@ -1,8 +1,8 @@
 package bruchalex.remna_shop.vpn.adapter.in.web;
 
 import bruchalex.remna_shop.shared.exception.ErrorResponse;
-import bruchalex.remna_shop.vpn.domain.VpnProviderException;
 import bruchalex.remna_shop.vpn.domain.exception.ResourceNotFoundException;
+import bruchalex.remna_shop.vpn.domain.exception.VpnProviderException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
