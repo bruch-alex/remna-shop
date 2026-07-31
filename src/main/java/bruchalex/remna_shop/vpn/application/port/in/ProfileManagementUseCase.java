@@ -12,6 +12,8 @@ public interface ProfileManagementUseCase {
 
     List<ProfileResult> getProfiles(GetProfilesCommand command);
 
+    ProfileResult renameProfile(RenameProfileCommand command);
+
     record DeviceResult(
             String label,
             String hwid,
@@ -43,5 +45,8 @@ public interface ProfileManagementUseCase {
     }
 
     record GetProfilesCommand(UUID userId) {
+    }
+
+    record RenameProfileCommand(UUID userId, UUID profileId, String newName) {
     }
 }

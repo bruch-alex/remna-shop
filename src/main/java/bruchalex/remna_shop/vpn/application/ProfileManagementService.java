@@ -104,6 +104,16 @@ public class ProfileManagementService implements ProfileManagementUseCase {
         return results;
     }
 
+    @Override
+    public ProfileResult renameProfile(RenameProfileCommand command) {
+        var profile = profileRepository.findByIdAndUserId(command.profileId(), command.userId())
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+
+        profile.renameProfile(command.newName());
+        var saved = profileRepository.save(profile);
+        return profileMapper.toResult(saved);
+    }
+
     private ProfileWithDevices fetchDevices(Profile profile) {
         Timer.Sample apiSample = Timer.start(meterRegistry);
         Map<String, Device> remoteDevicesByHwid = profileManagementAdapter

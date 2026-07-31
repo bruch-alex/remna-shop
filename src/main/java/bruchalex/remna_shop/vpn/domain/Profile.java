@@ -97,4 +97,8 @@ public class Profile {
     public void removeDevice(String hwid) {
         this.deviceLabels.removeIf(l -> l.getDeviceId().equals(hwid));
     }
+
+    public void renameProfile(String name) {
+        this.label = name;
+    }
 }
