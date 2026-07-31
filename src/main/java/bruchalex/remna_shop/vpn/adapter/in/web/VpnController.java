@@ -4,6 +4,7 @@ import bruchalex.remna_shop.shared.auth.AuthUser;
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.DeviceResponse;
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
 import bruchalex.remna_shop.vpn.adapter.in.web.dto.RenameDeviceRequest;
+import bruchalex.remna_shop.vpn.adapter.in.web.dto.RenameProfileRequest;
 import bruchalex.remna_shop.vpn.application.port.in.DeviceManagementUseCase;
 import bruchalex.remna_shop.vpn.application.port.in.ProfileManagementUseCase;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,23 @@ public class VpnController {
                 profileId
         );
         var result = profileManagementUseCase.getProfileSummary(command);
+        var response = mapper.toResponse(result);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{profileId}/rename")
+    public ResponseEntity<ProfileResponse> renameProfile(
+            @AuthenticationPrincipal AuthUser authUser,
+            @PathVariable("profileId") UUID profileId,
+            @RequestBody RenameProfileRequest request
+    ) {
+        var command = new ProfileManagementUseCase.RenameProfileCommand(
+                UUID.fromString(authUser.userUuid()),
+                profileId,
+                request.name()
+        );
+
+        var result = profileManagementUseCase.renameProfile(command);
         var response = mapper.toResponse(result);
         return ResponseEntity.ok(response);
     }
