@@ -10,6 +10,8 @@ public interface ProfileManagementUseCase {
 
     List<ProfileResult> syncRemoteProfiles(SyncProfileCommand command);
 
+    List<ProfileResult> getProfiles(GetProfilesCommand command);
+
     record DeviceResult(
             String label,
             String hwid,
@@ -38,5 +40,8 @@ public interface ProfileManagementUseCase {
     }
 
     record SyncProfileCommand(UUID userId, String email) {
+    }
+
+    record GetProfilesCommand(UUID userId) {
     }
 }

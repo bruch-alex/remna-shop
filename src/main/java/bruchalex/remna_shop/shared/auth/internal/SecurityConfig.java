@@ -43,7 +43,9 @@ public class SecurityConfig {
                     authz.requestMatchers("/admin/**").hasRole("ADMIN");
                     authz.requestMatchers(POST, "/tariff/**").hasRole("ADMIN");
                     authz.requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll();
-                    authz.anyRequest().authenticated();
+                    authz.requestMatchers("/actuator/**").permitAll();
+//                    authz.anyRequest().authenticated();
+                    authz.anyRequest().permitAll();
                 })
                 .exceptionHandling(ex -> {
                     ex.accessDeniedHandler(customAccessDeniedHandler());

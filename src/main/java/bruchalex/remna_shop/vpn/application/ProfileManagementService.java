@@ -6,6 +6,8 @@ import bruchalex.remna_shop.vpn.application.port.out.persistence.ProfileReposito
 import bruchalex.remna_shop.vpn.domain.Device;
 import bruchalex.remna_shop.vpn.domain.Profile;
 import bruchalex.remna_shop.vpn.domain.exception.ResourceNotFoundException;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,6 +30,8 @@ public class ProfileManagementService implements ProfileManagementUseCase {
     private final ProfileManagementAdapter profileManagementAdapter;
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
+    private final MeterRegistry meterRegistry;
+    private final Executor remnawaveApiExecutor;
 
     @Override
     @Transactional
@@ -38,7 +45,7 @@ public class ProfileManagementService implements ProfileManagementUseCase {
                 .collect(Collectors.toMap(Device::getId, Function.identity()));
 
         profileInDB.merge(remoteProfile);
-        profileInDB.syncDevices(remoteDevicesByHwid);
+        profileInDB.mergeDevices(remoteDevicesByHwid);
         var savedProfile = profileRepository.save(profileInDB);
 
         return profileMapper.toResult(savedProfile, remoteDevicesByHwid);
@@ -55,11 +62,59 @@ public class ProfileManagementService implements ProfileManagementUseCase {
                     .getDevicesByExternalId(p.getRemnawaveUserUuid())
                     .stream()
                     .collect(Collectors.toMap(Device::getId, Function.identity()));
-            p.syncDevices(remoteDevicesByHwid);
+            p.mergeDevices(remoteDevicesByHwid);
             var savedProfile = profileRepository.save(p);
             results.add(profileMapper.toResult(savedProfile, remoteDevicesByHwid));
         });
         return results;
+    }
+
+    @Override
+    public List<ProfileResult> getProfiles(GetProfilesCommand command) {
+        Timer.Sample overallSample = Timer.start(meterRegistry);
+
+        var profiles = profileRepository.findAllByUserIdWithDevices(command.userId());
+        log.info("Profiles found: {}", profiles.size());
+
+        List<CompletableFuture<ProfileWithDevices>> futures = profiles.stream()
+                .map(profile -> CompletableFuture.supplyAsync(() -> fetchDevices(profile), remnawaveApiExecutor)
+                        .orTimeout(1, TimeUnit.SECONDS)
+                        .exceptionally(ex -> {
+                            log.warn("Failed to fetch devices for profile {}", profile.getId(), ex);
+                            return new ProfileWithDevices(profile, Map.of());
+                        }))
+                .toList();
+
+        List<ProfileWithDevices> withDevices = futures.stream()
+                .map(CompletableFuture::join)
+                .toList();
+
+        var results = withDevices.stream()
+                .map(pwd -> {
+                    Timer.Sample dbSample = Timer.start(meterRegistry);
+                    pwd.profile().mergeDevices(pwd.devices());
+                    var savedProfile = profileRepository.save(pwd.profile());
+                    dbSample.stop(meterRegistry.timer("profileManagementService.db.save"));
+
+                    return profileMapper.toResult(savedProfile, pwd.devices());
+                })
+                .toList();
+
+        overallSample.stop(meterRegistry.timer("profileManagementService.getProfiles.total"));
+        return results;
+    }
+
+    private ProfileWithDevices fetchDevices(Profile profile) {
+        Timer.Sample apiSample = Timer.start(meterRegistry);
+        Map<String, Device> remoteDevicesByHwid = profileManagementAdapter
+                .getDevicesByExternalId(profile.getRemnawaveUserUuid())
+                .stream()
+                .collect(Collectors.toMap(Device::getId, Function.identity()));
+        apiSample.stop(meterRegistry.timer("profileManagementService.external.fetch"));
+        return new ProfileWithDevices(profile, remoteDevicesByHwid);
+    }
+
+    private record ProfileWithDevices(Profile profile, Map<String, Device> devices) {
     }
 
 }

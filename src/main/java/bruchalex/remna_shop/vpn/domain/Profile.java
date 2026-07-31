@@ -54,7 +54,7 @@ public class Profile {
         this.fetchedAt = Instant.now();
     }
 
-    public void syncDevices(Map<String, Device> devicesByHwid) {
+    public void mergeDevices(Map<String, Device> devicesByHwid) {
         // 1. Remove labels whose device no longer exists in the incoming list
         deviceLabels.removeIf(link -> !devicesByHwid.containsKey(link.getDeviceId()));
 

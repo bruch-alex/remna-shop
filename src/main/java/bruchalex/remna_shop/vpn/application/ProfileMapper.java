@@ -15,6 +15,9 @@ import java.util.Map;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface ProfileMapper {
 
+    @Mapping(target = "addedDevices", expression = "java(profile.getDeviceLabels().size())")
+    ProfileManagementUseCase.ProfileResult toResult(Profile profile);
+
     @Mapping(target = "devices", expression = "java(mapDevices(profile.getDeviceLabels(), remoteDevicesByHwid))")
     @Mapping(target = "addedDevices", expression = "java(profile.getDeviceLabels().size())")
     ProfileManagementUseCase.ProfileResult toResult(Profile profile, @Context Map<String, Device> remoteDevicesByHwid);

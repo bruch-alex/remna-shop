@@ -24,6 +24,15 @@ public class VpnController {
 
     private final RestMapper mapper;
 
+    @GetMapping
+    public ResponseEntity<List<ProfileResponse>> getProfiles(@AuthenticationPrincipal AuthUser authUser) {
+        var result = profileManagementUseCase.getProfiles(new ProfileManagementUseCase.GetProfilesCommand(UUID.fromString(authUser.userUuid())));
+        var response = result.stream()
+                .map(mapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{profileId}")
     public ResponseEntity<ProfileResponse> getProfile(
             @PathVariable("profileId") UUID profileId,
