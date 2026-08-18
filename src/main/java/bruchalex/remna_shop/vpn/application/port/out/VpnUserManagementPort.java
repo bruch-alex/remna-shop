@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface VpnUserManagementPort {
-    Profile create(Profile profile);
+    Profile create(UUID profileId);
+
+    boolean delete(UUID profileId);
 
     Profile getProfileByUsername(String username);
 

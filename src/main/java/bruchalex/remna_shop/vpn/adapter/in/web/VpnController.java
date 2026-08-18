@@ -1,10 +1,7 @@
 package bruchalex.remna_shop.vpn.adapter.in.web;
 
 import bruchalex.remna_shop.shared.auth.AuthUser;
-import bruchalex.remna_shop.vpn.adapter.in.web.dto.DeviceResponse;
-import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
-import bruchalex.remna_shop.vpn.adapter.in.web.dto.RenameDeviceRequest;
-import bruchalex.remna_shop.vpn.adapter.in.web.dto.RenameProfileRequest;
+import bruchalex.remna_shop.vpn.adapter.in.web.dto.*;
 import bruchalex.remna_shop.vpn.application.port.in.DeviceManagementUseCase;
 import bruchalex.remna_shop.vpn.application.port.in.ProfileManagementUseCase;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +29,14 @@ public class VpnController {
                 .map(mapper::toResponse)
                 .toList();
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProfileResponse> createProfile(
+            @AuthenticationPrincipal AuthUser authUser,
+            @RequestBody CreateProfileRequest createProfileRequest
+    ){
+        var command =
     }
 
     @GetMapping("/{profileId}")

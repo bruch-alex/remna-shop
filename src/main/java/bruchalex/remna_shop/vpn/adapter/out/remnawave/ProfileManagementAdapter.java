@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,14 +29,24 @@ public class ProfileManagementAdapter implements VpnUserManagementPort {
     private final RemnawaveMapper remnawaveMapper;
 
     @Override
-    public Profile create(Profile profile) {
+    public Profile create(UUID profileId) {
         var request = CreateUserRequest.builder()
-                .username(profile.getId())
-                .expireAt(profile.getExpiresAt())
+                .username(profileId)
+                .expireAt(Instant.now())
                 .build();
         try {
             var response = remnawaveUsersController.createUser(request).response();
             return remnawaveMapper.toVpnProfile(response);
+        } catch (RemnawaveApiException e) {
+            throw new VpnProviderException(e.getMessage(), e.getStatus().value());
+        }
+    }
+
+    @Override
+    public boolean delete(UUID remnawaveUserUuid) {
+        try {
+            var response = remnawaveUsersController.deleteUser(remnawaveUserUuid).response();
+            return response.isDeleted();
         } catch (RemnawaveApiException e) {
             throw new VpnProviderException(e.getMessage(), e.getStatus().value());
         }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +33,30 @@ public class ProfileManagementService implements ProfileManagementUseCase {
     private final ProfileMapper profileMapper;
     private final MeterRegistry meterRegistry;
     private final Executor remnawaveApiExecutor;
+
+    @Override
+    public ProfileResult createProfile(CreateProfileCommand command) {
+        var profileId = UUID.randomUUID();
+        Profile remoteProfile = profileManagementAdapter.create(profileId);
+
+
+        remoteProfile.setNewUserId(command.userId());
+        remoteProfile.renameProfile(command.name());
+
+        Profile saved;
+        try {
+            saved = profileRepository.save(remoteProfile);
+        } catch (Exception e) {
+            log.error("DB save failed after remote profile {} was created; attempting rollback", remoteProfile.getId(), e);
+            var isDeleted = profileManagementAdapter.delete(remoteProfile.getRemnawaveUserUuid());
+            if (!isDeleted) {
+                log.debug("Remote profile {} was deleted", remoteProfile.getId());
+            }
+            throw e;
+        }
+
+        return profileMapper.toResult(saved);
+    }
 
     @Override
     @Transactional

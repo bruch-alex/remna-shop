@@ -1,10 +1,15 @@
 package bruchalex.remna_shop.vpn.application.port.in;
 
+import bruchalex.remna_shop.vpn.adapter.in.web.dto.CreateProfileRequest;
+import bruchalex.remna_shop.vpn.adapter.in.web.dto.ProfileResponse;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 public interface ProfileManagementUseCase {
+
+    ProfileResult createProfile(CreateProfileCommand command);
 
     ProfileResult getProfileSummary(GetProfileSummaryCommand command);
 
@@ -48,5 +53,8 @@ public interface ProfileManagementUseCase {
     }
 
     record RenameProfileCommand(UUID userId, UUID profileId, String newName) {
+    }
+
+    record CreateProfileCommand(UUID userId, String name) {
     }
 }
